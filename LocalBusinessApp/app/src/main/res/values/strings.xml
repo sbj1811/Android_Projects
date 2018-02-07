@@ -4,4 +4,6 @@
     <string name="business_address">101 Wall St, NY 12345</string>
     <string name="business_phone">(123) 456-7890</string>
     <string name="business_type">Software</string>
+    <string name="business_hour">Mon-Fri  9am-5pm</string>
+    <string name="business_info">Showcasing the work has never been more creative.</string>
 </resources>
