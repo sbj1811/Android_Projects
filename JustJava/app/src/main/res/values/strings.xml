@@ -1,3 +1,9 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Just Java</string>
+    <string name="hint_name">Name</string>
+    <string name="toppings">Toppings</string>
+    <string name="quantity">Quantity</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="order">Order</string>
+    <string name="order_summary_name">Name: <xliff:g id="name" example="Amy">%s</xliff:g></string>
 </resources>

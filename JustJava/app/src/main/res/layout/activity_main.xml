@@ -16,7 +16,7 @@
             android:id="@+id/name_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="@string/hint_name"
             android:layout_marginBottom="16dp"
             android:inputType="textCapWords" />
 
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
-            android:text="Toppings"
+            android:text="@string/toppings"
             android:textAllCaps="true" />
 
         <CheckBox
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:paddingBottom="16dp"
-            android:text="Quantity"
+            android:text="@string/quantity"
             android:textAllCaps="true" />
 
         <LinearLayout
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
             android:paddingTop="16dp"
-            android:text="Order Summary"
+            android:text="@string/order_summary"
             android:textAllCaps="true" />
 
         <TextView
@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="submitOrder"
-            android:text="Order" />
+            android:text="@string/order" />
 
     </LinearLayout>
 </ScrollView>
