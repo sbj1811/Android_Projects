@@ -1,8 +1,10 @@
 package com.example.android.justjava;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -13,6 +15,7 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity {
 
     int quantity = 0;
+    boolean checkBox1_status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,36 +23,49 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void itemClicked(View view){
+        CheckBox checkBox1 = (CheckBox) view;
+        checkBox1_status = checkBox1.isChecked();
+    }
+
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        String priceMessage = "Total: $"+(quantity*5)+ "\nThank you!";
-        displayMessage(priceMessage);
+        int price = calculatePrice(quantity);
+        displayMessage(createOrderSummary(price));
+    }
+
+    private String createOrderSummary(int price){
+        String priceMessage = "Name: Shaunak Jani"+"\nAdd Whipped cream? "+checkBox1_status+"\nQuantity: "+quantity+"\nTotal: $"+ price + "\nThank you!";
+        return priceMessage;
     }
 
     /**
      * This method displays the given quantity value on the screen.
      */
-    private void display(int number) {
+    private void displayQuantity(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
         quantityTextView.setText("" + number);
     }
 
     /**
-     * This method displays the given price on the screen.
+     * Calculates the price of the order based on the current quantity.
+     *
+     * @return the price
      */
-    private void displayPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+    private int calculatePrice(int quantity) {
+        int price = quantity * 5;
+        return price;
     }
 
     /**
      * This method displays the given text on the screen.
      */
     private void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        orderSummaryTextView.setTextColor(Color.parseColor("#4DB6AC"));
+        orderSummaryTextView.setText(message);
     }
 
     /**
@@ -57,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void increment(View view) {
         quantity++;
-        display(quantity);
+        displayQuantity(quantity);
     }
 
     /**
@@ -65,6 +81,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public void decrement(View view) {
         quantity--;
-        display(quantity);
+        displayQuantity(quantity);
     }
 }
