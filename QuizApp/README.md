@@ -1,4 +1,4 @@
-# Football Score App
+# Andriod Quiz App
 ### README
 #### Version: 1.0
 #### Author: Shaunak Jani
