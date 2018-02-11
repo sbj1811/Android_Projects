@@ -12,3 +12,13 @@
 ![Football Score App][Football-Score-app]
 
 [Football-Score-app]: ./FootballScore/media/app_screenshot.png
+
+## Andriod Quiz App
+![Andriod Quiz App][Andriod-Quiz-app]
+
+[Andriod-Quiz-app]: ./QuizApp/media/app_screenshot.png
+
+## Hindi Translator App
+![Hindi Translator App][Hindi-Translator-app]
+
+[Hindi-Translator-app]: ./Hindi_translator/media/app_screenshot.png
