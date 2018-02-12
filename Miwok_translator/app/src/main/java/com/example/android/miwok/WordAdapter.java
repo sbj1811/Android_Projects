@@ -1,4 +1,4 @@
-package com.example.android.hindi;
+package com.example.android.miwok;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.android.hindi.R;
 
 import java.util.ArrayList;
 
@@ -49,8 +47,8 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
         Word currentWord = getItem(position);
 
-        TextView hindiTextView = (TextView) listItemView.findViewById(R.id.hindi_text_view);
-        hindiTextView.setText(currentWord.getHindiTranslation());
+        TextView hindiTextView = (TextView) listItemView.findViewById(R.id.miwok_text_view);
+        hindiTextView.setText(currentWord.getMiwokTranslation());
 
         TextView defaultTextView = (TextView) listItemView.findViewById(R.id.default_text_view);
         defaultTextView.setText(currentWord.getDefaultTranslation());

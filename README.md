@@ -18,7 +18,7 @@
 
 [Andriod-Quiz-app]: ./QuizApp/media/app_screenshot.png
 
-## Hindi Translator App
-![Hindi Translator App][Hindi-Translator-app]
+## Miwok Translator App
+![Miwok Translator App][Miwok-Translator-app]
 
-[Hindi-Translator-app]: ./Hindi_translator/media/app_screenshot.png
+[Miwok-Translator-app]: ./Miwok_translator/media/app_screenshot.png

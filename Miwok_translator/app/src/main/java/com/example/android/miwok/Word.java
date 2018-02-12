@@ -1,4 +1,4 @@
-package com.example.android.hindi;
+package com.example.android.miwok;
 
 /**
  * Created by sjani on 2/11/2018.
@@ -9,8 +9,8 @@ public class Word {
     /** Default translation for the word */
     private String mDefaultTranslation;
 
-    /** Hindi translation for the word */
-    private String mHindiTranslation;
+    /** Miwok translation for the word */
+    private String mMiwokTranslation;
 
     private int mImageResourceId;
     //private int mImageResourceId = NO_IMAGE_PROVIDED;
@@ -22,23 +22,23 @@ public class Word {
      *
      * @param defaultTranslation is the word in a language that the user is already familiar with
      *                           (such as English)
-     * @param hindiTranslation is the word in the Hindi language
+     * @param miwokTranslation is the word in the Miwok language
      */
-    public Word(String defaultTranslation, String hindiTranslation) {
+    public Word(String defaultTranslation, String miwokTranslation) {
         mDefaultTranslation = defaultTranslation;
-        mHindiTranslation = hindiTranslation;
+        mMiwokTranslation = miwokTranslation;
     }
 
     /**
      * Create a new Word object. Constructor 2
      * @param defaultTranslation
-     * @param hindiTranslation
+     * @param miwokTranslation
      * @param imageResourceId
      */
 
-    public Word(String defaultTranslation, String hindiTranslation, int imageResourceId) {
+    public Word(String defaultTranslation, String miwokTranslation, int imageResourceId) {
         mDefaultTranslation = defaultTranslation;
-        mHindiTranslation = hindiTranslation;
+        mMiwokTranslation = miwokTranslation;
         mImageResourceId = imageResourceId;
     }
 
@@ -51,10 +51,10 @@ public class Word {
     }
 
     /**
-     * Get the Hindi translation of the word.
+     * Get the Miwok translation of the word.
      */
-    public String getHindiTranslation() {
-        return mHindiTranslation;
+    public String getMiwokTranslation() {
+        return mMiwokTranslation;
     }
 
     /**
