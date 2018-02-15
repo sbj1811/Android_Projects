@@ -23,11 +23,11 @@ public class SectionAdapter extends FragmentPagerAdapter {
         if (position == 0) {
             return new AttractionFragment();
         } else if (position == 1){
-            return new Nightlife();
+            return new ActivitiesFragment();
         } else if (position == 2){
             return new FoodFragment();
         } else {
-            return new WalkingFragment();
+            return new NightlifeFragment();
         }
     }
 
@@ -42,11 +42,11 @@ public class SectionAdapter extends FragmentPagerAdapter {
             case 0:
                 return mContext.getString(R.string.category_attraction);
             case 1:
-                return mContext.getString(R.string.category_nightlife);
+                return mContext.getString(R.string.category_activities);
             case 2:
                 return mContext.getString(R.string.category_food);
             case 3:
-                return mContext.getString(R.string.category_walking);
+                return mContext.getString(R.string.category_nightlife);
             default:
                 return null;
         }
