@@ -26,4 +26,4 @@
 ## San Francisco Tour Guide
 ![San Francisco Tour Guide App][SF-TourGuide-app]
 
-[SF-TourGuide-app]: .SanFranciscoTourGuide/media/app_screenshot.png
+[SF-TourGuide-app]: ./SanFranciscoTourGuide/media/app_screenshot.png
