@@ -22,3 +22,8 @@
 ![Miwok Translator App][Miwok-Translator-app]
 
 [Miwok-Translator-app]: ./Miwok_translator/media/app_screenshot.png
+
+## San Francisco Tour Guide
+![San Francisco Tour Guide App][SF-TourGuide-app]
+
+[SF-TourGuide-app]: .SanFranciscoTourGuide/media/app_screenshot.png
