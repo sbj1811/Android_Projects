@@ -34,10 +34,10 @@ public class AttractionFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.main_list, container, false);
 
         final ArrayList<Place> places = new ArrayList<Place>();
-        places.add(new Place("Golden Gate bridge",R.drawable.goldengatebridge,"Golden Gate Bridge, San Francisco, CA","4159215858","Open All Days 24 hours","http://www.goldengatebridge.org/",false));
-        places.add(new Place("Alcatraz",R.drawable.alcatraz,"Alcatraz Island, San Francisco, CA","4155614900","Open All Days 9AM - 6PM","https://www.nps.gov/alca/index.htm",false));
-        places.add(new Place("Pier 39",R.drawable.pier39,"Pier 39, San Francisco, CA","","Open All Days 10AM–10PM","http://www.pier39.com/",false));
-        places.add(new Place("Coit Tower",R.drawable.coittower,"Coit Tower, San Francisco, CA","4152490995","Open All Days 10AM–5PM","http://sfrecpark.org/destination/telegraph-hill-pioneer-park/coit-tower/",false));
+        places.add(new Place("Golden Gate bridge",R.drawable.goldengatebridge,"Golden Gate Bridge, San Francisco, CA","4159215858","Open All Days 24 hours","http://www.goldengatebridge.org/",false,this.getString(R.string.goldengate_info)));
+        places.add(new Place("Alcatraz",R.drawable.alcatraz,"Alcatraz Island, San Francisco, CA","4155614900","Open All Days 9AM - 6PM","https://www.nps.gov/alca/index.htm",false,this.getString(R.string.alcatraz_info)));
+        places.add(new Place("Pier 39",R.drawable.pier39,"Pier 39, San Francisco, CA","","Open All Days 10AM–10PM","http://www.pier39.com/",false,this.getString(R.string.pier_info)));
+        places.add(new Place("Coit Tower",R.drawable.coittower,"Coit Tower, San Francisco, CA","4152490995","Open All Days 10AM–5PM","http://sfrecpark.org/destination/telegraph-hill-pioneer-park/coit-tower/",false,this.getString(R.string.coit_info)));
 
         PlaceAdapter placeAdapter = new PlaceAdapter(getActivity(),places);
 

@@ -32,10 +32,10 @@ public class ActivitiesFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.main_list, container, false);
 
         final ArrayList<Place> places = new ArrayList<Place>();
-        places.add(new Place("Golden Gate bridge",R.drawable.goldengatebridge,"Golden Gate Bridge, San Francisco, CA","415-921-5858","Open All Days 24 hours","http://www.goldengatebridge.org/",false));
-        places.add(new Place("Alcatraz",R.drawable.alcatraz,"San Francisco, CA 94133","415-561-4900","Open All Days 9AM - 6PM","https://www.nps.gov/alca/index.htm",false));
-        places.add(new Place("Pier 39",R.drawable.pier39,"Beach St & The Embarcadero, San Francisco, CA 94133","","Open All Days 10AM–10PM","http://www.pier39.com/",false));
-        places.add(new Place("Coit Tower",R.drawable.coittower,"1 Telegraph Hill Blvd, San Francisco, CA 94133","415-249-0995","Open All Days 10AM–5PM","http://sfrecpark.org/destination/telegraph-hill-pioneer-park/coit-tower/",false));
+        places.add(new Place("de Young Museum",R.drawable.deyoung,"de Young Museum, San Francisco, CA","4157503600","Open All Days 24 hours","https://deyoung.famsf.org",false,this.getString(R.string.deyoung_info)));
+        places.add(new Place("SF Giants AT&T Park",R.drawable.attpark,"AT&T Park, San Francisco, CA","4159722000","Open All Days 9AM - 6PM","http://www.sfgiants.com",false,this.getString(R.string.attpark_info)));
+        places.add(new Place("Big Bus Tours",R.drawable.bigbus,"99 Jefferson Street San Francisco, CA 94133","4154331657","Open All Days 10AM–10PM","http://eng.bigbustours.com/sanfrancisco/home.html",false,this.getString(R.string.bigbus_info)));
+        places.add(new Place("Hornblower Cruises",R.drawable.cruise,"Pier 3, On the Embarcadero San Francisco, CA 94111","4157888866","Open All Days 10AM–5PM","http://www.hornblower.com",false,this.getString(R.string.cruise_info)));
 
         PlaceAdapter placeAdapter = new PlaceAdapter(getActivity(),places);
 

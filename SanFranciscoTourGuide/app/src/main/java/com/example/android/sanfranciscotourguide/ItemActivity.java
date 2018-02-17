@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -50,6 +52,9 @@ public class ItemActivity extends AppCompatActivity implements Serializable {
 
         ImageView imageView = (ImageView) findViewById(R.id.image);
         imageView.setImageResource(places.getSightImageId());
+
+        TextView infoTextView = (TextView) findViewById(R.id.info_text_view);
+        infoTextView.setText(places.getSightInfo());
 
         final LinearLayout favLinearLayout = (LinearLayout) findViewById(R.id.fav_linear_view);
         final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.fav_togglebox);
@@ -126,4 +131,5 @@ public class ItemActivity extends AppCompatActivity implements Serializable {
 
 
     }
+
 }

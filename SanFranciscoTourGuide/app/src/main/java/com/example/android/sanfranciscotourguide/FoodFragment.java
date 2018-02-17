@@ -33,10 +33,10 @@ public class FoodFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.main_list, container, false);
 
         final ArrayList<Place> places = new ArrayList<Place>();
-        places.add(new Place("Golden Gate bridge",R.drawable.goldengatebridge,"Golden Gate Bridge, San Francisco, CA","415-921-5858","Open All Days 24 hours","http://www.goldengatebridge.org/",false));
-        places.add(new Place("Alcatraz",R.drawable.alcatraz,"San Francisco, CA 94133","415-561-4900","Open All Days 9AM - 6PM","https://www.nps.gov/alca/index.htm",false));
-        places.add(new Place("Pier 39",R.drawable.pier39,"Beach St & The Embarcadero, San Francisco, CA 94133","","Open All Days 10AM–10PM","http://www.pier39.com/",false));
-        places.add(new Place("Coit Tower",R.drawable.coittower,"1 Telegraph Hill Blvd, San Francisco, CA 94133","415-249-0995","Open All Days 10AM–5PM","http://sfrecpark.org/destination/telegraph-hill-pioneer-park/coit-tower/",false));
+        places.add(new Place("Aster",R.drawable.aster,"1001 Guerrero St, San Francisco, CA 94110","4158759810","Open All Days 24 hours","http://astersf.com/",false,this.getString(R.string.aster)));
+        places.add(new Place("Shizen Vegan Sushi",R.drawable.shizen,"370 14th St, San Francisco, CA 94103","4156785767","Open All Days 9AM - 6PM","https://www.shizensf.com/",false,this.getString(R.string.shizen)));
+        places.add(new Place("Rooh",R.drawable.rooh,"5333 Brannan St #150, San Francisco, CA 94107","4155254174","Open All Days 10AM–5PM","http://www.roohsf.com/",false,this.getString(R.string.rooh)));
+        places.add(new Place("Tratto",R.drawable.tratto,"501 Geary St, San Francisco, CA 94102","4152920101","Open All Days 10AM–10PM","http://www.tratto-sf.com/",false,this.getString(R.string.tratto)));
 
         PlaceAdapter placeAdapter = new PlaceAdapter(getActivity(),places);
 

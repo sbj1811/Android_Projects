@@ -32,10 +32,10 @@ public class NightlifeFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.main_list, container, false);
 
         final ArrayList<Place> places = new ArrayList<Place>();
-        places.add(new Place("Golden Gate bridge",R.drawable.goldengatebridge,"Golden Gate Bridge, San Francisco, CA","415-921-5858","Open All Days 24 hours","http://www.goldengatebridge.org/",false));
-        places.add(new Place("Alcatraz",R.drawable.alcatraz,"San Francisco, CA 94133","415-561-4900","Open All Days 9AM - 6PM","https://www.nps.gov/alca/index.htm",false));
-        places.add(new Place("Pier 39",R.drawable.pier39,"Beach St & The Embarcadero, San Francisco, CA 94133","","Open All Days 10AM–10PM","http://www.pier39.com/",false));
-        places.add(new Place("Coit Tower",R.drawable.coittower,"1 Telegraph Hill Blvd, San Francisco, CA 94133","415-249-0995","Open All Days 10AM–5PM","http://sfrecpark.org/destination/telegraph-hill-pioneer-park/coit-tower/",false));
+        places.add(new Place("Bourbon and Branch",R.drawable.bourbonbranch,"501 Jones Street San Francisco, CA 94102","4153461735","Open All Days 24 hours","http://www.bourbonandbranch.com/",false,this.getString(R.string.bourbonbranch)));
+        places.add(new Place("1015 Folsom",R.drawable.folsom,"1015 Folsom St, San Francisco, CA 94103","4159911015","Open All Days 9AM - 6PM","http://1015.com/",false,this.getString(R.string.folsom)));
+        places.add(new Place("Devil's Acre",R.drawable.devilsccre,"256 Columbus Avenue San Francisco, CA 94133","4157664363","Open All Days 10AM–10PM","http://www.thedevilsacre.com/",false,this.getString(R.string.devilsacre)));
+        places.add(new Place("Temple Nightclub",R.drawable.temple,"540 Howard St, San Francisco, CA 94105","4153123668","Open All Days 10AM–5PM","http://templesf.com",false,this.getString(R.string.temple)));
 
         PlaceAdapter placeAdapter = new PlaceAdapter(getActivity(),places);
 

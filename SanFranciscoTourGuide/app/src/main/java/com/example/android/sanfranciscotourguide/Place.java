@@ -22,7 +22,9 @@ public class Place implements Serializable {
 
     private boolean sightFavorite;
 
-    public Place(String SightName, int SightImageId,String SightAddress,String SightPhone,String SightTime,String SightWesite,boolean isFavorite){
+    private String sightInfo;
+
+    public Place(String SightName, int SightImageId,String SightAddress,String SightPhone,String SightTime,String SightWesite,boolean isFavorite,String SightInfo){
         sightName = SightName;
         sightImageId = SightImageId;
         sightAddress = SightAddress;
@@ -30,6 +32,7 @@ public class Place implements Serializable {
         sightTime = SightTime;
         sightWebsite = SightWesite;
         sightFavorite = isFavorite;
+        sightInfo = SightInfo;
     }
 
     public String getSightName(){
@@ -53,5 +56,6 @@ public class Place implements Serializable {
     public void setSightFavorite(boolean isFavorite){
         sightFavorite = isFavorite;
     }
+    public String getSightInfo(){ return sightInfo; }
 
 }

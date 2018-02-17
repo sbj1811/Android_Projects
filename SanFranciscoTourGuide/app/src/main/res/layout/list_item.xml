@@ -5,6 +5,7 @@
     android:descendantFocusability="blocksDescendants"
     android:layout_height="@dimen/image_height">
 
+
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
