@@ -22,7 +22,10 @@
         android:focusable="false"
         android:layout_alignParentRight="true"
         android:textOn=""
-        android:textOff=""/>
+        android:textOff=""
+        android:shadowColor="#212121"
+        android:shadowRadius="5"
+        android:shadowDy="5"/>
 
     <TextView
         android:id="@+id/name_text_view"
@@ -35,5 +38,8 @@
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
+        android:shadowColor="#212121"
+        android:shadowRadius="5"
+        android:shadowDy="5"
         tools:text="lutti" />
 </RelativeLayout>

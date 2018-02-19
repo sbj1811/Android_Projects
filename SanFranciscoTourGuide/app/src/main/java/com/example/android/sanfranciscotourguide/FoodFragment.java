@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,8 @@ public class FoodFragment extends Fragment {
     public FoodFragment() {
         // Required empty public constructor
     }
-
+    final ArrayList<Place> places = new ArrayList<Place>();
+    private static Bundle bundle = new Bundle();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,7 +51,33 @@ public class FoodFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Place place = places.get(i);
+                final Place place = places.get(i);
+                final ToggleButton toggleButton = (ToggleButton) getActivity().findViewById(R.id.fav_togglebox_main);
+                bundle.putBoolean("ToggleButtonState", toggleButton.isChecked());
+                toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    boolean isAlreadyChecked = place.getSightFavorite();
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                        if (isChecked) {
+                            if (isAlreadyChecked){
+                                place.setSightFavorite(false);
+                                toggleButton.setBackgroundResource(R.drawable.ic_favorite_border_white_24dp);
+                                return;
+                            }
+                            place.setSightFavorite(true);
+                            toggleButton.setBackgroundResource(R.drawable.ic_favorite_white_24dp);
+                        } else {
+                            if (isAlreadyChecked){
+                                place.setSightFavorite(true);
+                                toggleButton.setBackgroundResource(R.drawable.ic_favorite_white_24dp);
+                                return;
+                            }
+                            place.setSightFavorite(false);
+                            toggleButton.setBackgroundResource(R.drawable.ic_favorite_border_white_24dp);
+                        }
+
+                    }
+                });
                 Intent itemIntent = new Intent(getActivity(), ItemActivity.class);
                 itemIntent.putExtra("sampleObject",place);
                 startActivity(itemIntent);
@@ -56,6 +85,19 @@ public class FoodFragment extends Fragment {
         });
 
         return mainView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ToggleButton toggleButton = (ToggleButton) getActivity().findViewById(R.id.fav_togglebox_main);
+        bundle.putBoolean("ToggleButtonState", toggleButton.isChecked());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //   Toast.makeText(getActivity(),"RESUME",Toast.LENGTH_LONG).show();
     }
 
 

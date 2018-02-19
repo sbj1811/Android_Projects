@@ -80,6 +80,11 @@ public class ItemActivity extends AppCompatActivity implements Serializable {
                     places.setSightFavorite(true);
                     toggleButton.setBackgroundResource(R.drawable.ic_favorite_white_24dp);
                 } else {
+                    if (isAlreadyChecked){
+                        places.setSightFavorite(true);
+                        toggleButton.setBackgroundResource(R.drawable.ic_favorite_white_24dp);
+                        return;
+                    }
                     places.setSightFavorite(false);
                     toggleButton.setBackgroundResource(R.drawable.ic_favorite_border_white_24dp);
                 }
