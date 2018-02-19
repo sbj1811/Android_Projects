@@ -59,4 +59,4 @@ https://earthquake.usgs.gov/fdsnws/event/1/
 
 ![Quake Report App][Quake-Report-App]
 
-[Quake-Report-App]: ./ud843-QuakeReport/media/app_screenshot.png
+[Quake-Report-App]: ./EarthquakeReport/media/app_screenshot.png
