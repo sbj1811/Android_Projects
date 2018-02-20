@@ -10,6 +10,8 @@ public class Earthquake {
     private long quakeDate;
     private String quakeUrl;
 
+    private static final String LOG_TAG = Earthquake.class.getName();
+
     public Earthquake(double quakemmagnitude, String quakelocation, long quakedate, String quakeurl){
         quakeMmagnitude = quakemmagnitude;
         quakeLocation = quakelocation;

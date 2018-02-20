@@ -16,16 +16,23 @@
 package com.example.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 // import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +45,7 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     private static final String USGS_REQUEST_URL =
             "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&minmag=2.5";
 
+    private TextView emptyTextView;
 
     /** Adapter for the list of earthquakes */
     private EarthquakeAdapter mAdapter;
@@ -56,6 +64,9 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
         earthquakeListView.setAdapter(mAdapter);
+
+        emptyTextView = (TextView) findViewById(R.id.empty_view);
+        earthquakeListView.setEmptyView(emptyTextView);
 
         // Set an item click listener on the ListView, which sends an intent to a web browser
         // to open a website with more information about the selected earthquake.
@@ -80,29 +91,48 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
 //        EarthquakeAsyncTask task = new EarthquakeAsyncTask();
 //        task.execute(USGS_REQUEST_URL);
 
-        LoaderManager loaderManager = getLoaderManager();
-        loaderManager.initLoader(1,null,this);
+        ConnectivityManager cm =  (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+
+        if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()){
+            Log.e(LOG_TAG,"START loaderManager.initLoader");
+            LoaderManager loaderManager = getLoaderManager();
+            loaderManager.initLoader(1,null,this);
+        } else {
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+            progressBar.setVisibility(View.GONE);
+            emptyTextView.setText(R.string.no_connection);
+        }
+
     }
 
     @Override
     public Loader<List<Earthquake>> onCreateLoader(int i, Bundle bundle) {
+        Log.e(LOG_TAG,"START onCreateLoader");
         return new EarthquakeLoader(this,USGS_REQUEST_URL);
     }
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
-            // Clear the adapter of previous earthquake data
-            mAdapter.clear();
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+        progressBar.setVisibility(View.GONE);
+        emptyTextView.setText(R.string.no_earthquake);
 
-            // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
-            // data set. This will trigger the ListView to update.
-            if (earthquakes != null && !earthquakes.isEmpty()) {
-                mAdapter.addAll(earthquakes);
-            }
+        Log.e(LOG_TAG,"START onLoadFinished");
+        // Clear the adapter of previous earthquake data
+        mAdapter.clear();
+
+        // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
+        // data set. This will trigger the ListView to update.
+         if (earthquakes != null && !earthquakes.isEmpty()) {
+            mAdapter.addAll(earthquakes);
+         }
     }
 
     @Override
     public void onLoaderReset(Loader<List<Earthquake>> loader) {
+        Log.e(LOG_TAG,"START onLoaderReset");
         mAdapter.clear();
     }
 
