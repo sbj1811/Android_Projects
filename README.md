@@ -48,18 +48,19 @@ This app uses Fragments, ViewPager and TabView to display various categoirs of a
 [SF-TourGuide-app]: ./SanFranciscoTourGuide/media/app_screenshot.png
 
 
-## Quake Report App
+## Earthquake Report App
 ===================================
 
 This app displays a list of recent earthquakes in the world
-from the U.S. Geological Survey (USGS) organization.
+from the U.S. Geological Survey (USGS) organization. User can 
+modify the preference on the search.
 
 More info on the USGS Earthquake API available at:
 https://earthquake.usgs.gov/fdsnws/event/1/
 
-![Quake Report App][Quake-Report-App]
+![Earthquake Report App][Earthquake-Report-App]
 
-[Quake-Report-App]: ./EarthquakeReport/media/app_screenshot.png
+[Earthquake-Report-App]: ./EarthquakeReport/media/app_screenshot.png
 
 ## Book Listing App
 ===================================
