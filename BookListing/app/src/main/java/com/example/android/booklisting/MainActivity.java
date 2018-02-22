@@ -1,6 +1,9 @@
 package com.example.android.booklisting;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -56,14 +60,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
         searchButton = (Button)findViewById(R.id.search_button);
         searchStringView = (EditText) findViewById(R.id.search_view);
         //bookAsyncTask task = new bookAsyncTask();
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                API_URL = SEARCH_API_STRING + searchStringView.getText().toString();
-                new bookAsyncTask().execute(API_URL);
+                if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
+                    API_URL = SEARCH_API_STRING + searchStringView.getText().toString();
+                    new bookAsyncTask().execute(API_URL);
+                } else {
+                    ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+                    progressBar.setVisibility(View.GONE);
+                    emptyTextView.setText(R.string.no_internet);
+                }
             }
         });
 
@@ -85,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Book> books) {
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+            progressBar.setVisibility(View.GONE);
+            emptyTextView.setText(R.string.no_books);
+
             Log.e(LOG_TAG, "START : onPostExecute");
             mAdapter.clear();
 
