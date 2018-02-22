@@ -4,11 +4,15 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -23,7 +27,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
 
 
-    private static final String NEWS_REQUEST_URL = "http://content.guardianapis.com/search?q=";
+    private static final String NEWS_REQUEST_URL = "http://content.guardianapis.com/search";
 
     private String API_URL = "";
 
@@ -62,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-
         searchButton = (Button)findViewById(R.id.search_button);
         searchEditText = (EditText) findViewById(R.id.search_view);
         final LoaderManager loaderManager = getLoaderManager();
@@ -84,8 +87,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
-        API_URL = NEWS_REQUEST_URL+searchEditText.getText().toString()+"&api-key=test";
-        return new NewsLoader(this,API_URL);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String max_article = sharedPreferences.getString(getString(R.string.settings_max_articles_key),getString(R.string.settings_max_articles_default));
+        Uri baseUri = Uri.parse(NEWS_REQUEST_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("page-size",max_article);
+        uriBuilder.appendQueryParameter("show-fields","thumbnail");
+        uriBuilder.appendQueryParameter("api-key","test");
+        uriBuilder.appendQueryParameter("q",searchEditText.getText().toString());
+        return new NewsLoader(this,uriBuilder.toString());
     }
 
     @Override
@@ -106,4 +116,24 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<List<News>> loader) {
         mAdapter.clear();
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_layout, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

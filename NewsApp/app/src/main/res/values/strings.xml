@@ -2,4 +2,8 @@
     <string name="app_name">News App</string>
     <string name="no_news">No News to display</string>
     <string name="no_internet">No Internet connection</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_max_articles_label">Max Articles</string>
+    <string name="settings_max_articles_key" translatable="false">max_articles</string>
+    <string name="settings_max_articles_default" translatable="false">20</string>
 </resources>

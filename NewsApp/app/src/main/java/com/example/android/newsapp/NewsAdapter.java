@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +43,13 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         final News news = getItem(position);
 
+        ImageView imageView = (ImageView) listItemView.findViewById(R.id.news_image);
+        if (news.getNewsThumbnail() != null) {
+            Log.e(LOG_TAG, "IMAGE: " + news.getNewsThumbnail());
+            Picasso.with(getContext()).load(news.getNewsThumbnail()).into(imageView);
+        } else {
+            imageView.setImageResource(R.drawable.goldengatebridge);
+        }
         TextView titleView = (TextView) listItemView.findViewById(R.id.news_title);
         titleView.setText(news.getNewsHeadline());
 

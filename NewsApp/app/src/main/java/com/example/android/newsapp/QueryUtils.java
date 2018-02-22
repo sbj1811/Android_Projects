@@ -143,6 +143,7 @@ public class QueryUtils {
         String section = "";
         String type = "";
         String url = "";
+        String thumbnail = "";
 
         try {
 
@@ -156,8 +157,9 @@ public class QueryUtils {
                 date = jsonObject.getString("webPublicationDate");
                 type = jsonObject.getString("type");
                 url = jsonObject.getString("webUrl");
-
-                News news_item = new News(title, section, type, date, url);
+                JSONObject fields = jsonObject.getJSONObject("fields");
+                thumbnail = fields.getString("thumbnail");
+                News news_item = new News(title, section, type, date, url,thumbnail);
                 news.add(news_item);
             }
 
