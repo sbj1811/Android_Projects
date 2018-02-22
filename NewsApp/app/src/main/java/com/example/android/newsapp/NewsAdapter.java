@@ -44,12 +44,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
         final News news = getItem(position);
 
         ImageView imageView = (ImageView) listItemView.findViewById(R.id.news_image);
-        if (news.getNewsThumbnail() != null) {
-            Log.e(LOG_TAG, "IMAGE: " + news.getNewsThumbnail());
-            Picasso.with(getContext()).load(news.getNewsThumbnail()).into(imageView);
-        } else {
-            imageView.setImageResource(R.drawable.goldengatebridge);
-        }
+        Picasso.with(getContext()).load(news.getNewsThumbnail()).into(imageView);
+
         TextView titleView = (TextView) listItemView.findViewById(R.id.news_title);
         titleView.setText(news.getNewsHeadline());
 
