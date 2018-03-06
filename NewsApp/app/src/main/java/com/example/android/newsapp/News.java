@@ -19,13 +19,13 @@ public class News {
     private String newsThumbnail;
 
 
-    public News(String newsheadline, String newssection, String newstype, String newsdate, String newsurl,String newsthumbnail) {
+    public News(String newsheadline, String newssection, String newstype, String newsdate, String newsurl, String newsthumbnail) {
         this.newsHeadline = newsheadline;
         this.newsSection = newssection;
         this.newsType = newstype;
         this.newsDate = newsdate;
-        this.newsUrl= newsurl;
-        this.newsThumbnail =  newsthumbnail;
+        this.newsUrl = newsurl;
+        this.newsThumbnail = newsthumbnail;
     }
 
     public String getNewsHeadline() {
@@ -48,5 +48,7 @@ public class News {
         return newsUrl;
     }
 
-    public String getNewsThumbnail(){ return newsThumbnail; }
+    public String getNewsThumbnail() {
+        return newsThumbnail;
+    }
 }

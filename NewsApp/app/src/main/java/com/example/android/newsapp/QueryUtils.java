@@ -42,7 +42,7 @@ public class QueryUtils {
         String jsonResponse = null;
         try {
             jsonResponse = makeHttpRequest(url);
-            Log.e(LOG_TAG, "fetchNewsData: "+ jsonResponse);
+            Log.e(LOG_TAG, "fetchNewsData: " + jsonResponse);
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
@@ -59,7 +59,7 @@ public class QueryUtils {
      * Returns new URL object from the given string URL.
      */
     private static URL createUrl(String stringUrl) {
-        Log.e(LOG_TAG, "NEWS:"+stringUrl);
+        Log.e(LOG_TAG, "NEWS:" + stringUrl);
         URL url = null;
         try {
             url = new URL(stringUrl);
@@ -131,7 +131,7 @@ public class QueryUtils {
         return output.toString();
     }
 
-    private static List<News> extractDatafromJson(String newsJson){
+    private static List<News> extractDatafromJson(String newsJson) {
         Log.e(LOG_TAG, "START : extractDatafromJson");
         if (TextUtils.isEmpty(newsJson)) {
             return null;
@@ -159,11 +159,11 @@ public class QueryUtils {
                 url = jsonObject.getString("webUrl");
                 JSONObject fields = jsonObject.getJSONObject("fields");
                 thumbnail = fields.getString("thumbnail");
-                News news_item = new News(title, section, type, date, url,thumbnail);
+                News news_item = new News(title, section, type, date, url, thumbnail);
                 news.add(news_item);
             }
 
-        } catch (JSONException j){
+        } catch (JSONException j) {
             Log.e(LOG_TAG, "Problem parsing the Google Books API JSON results", j);
         }
 

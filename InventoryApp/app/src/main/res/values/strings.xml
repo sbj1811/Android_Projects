@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Inventory App</string>
+    <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+    <string name="empty_view_subtitle_text">Get started by adding a item</string>
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+    <string name="action_delete_all_entries">Delete All Items</string>
+    <string name="product_name">Name</string>
+    <string name="product_quantity">Quantity</string>
+    <string name="product_price">Price</string>
+    <string name="add_item">Add Item</string>
+    <string name="cancel">Cancel</string>
+    <string name="sell_error">Error Selling Item</string>
+    <string name="empty_field">Please enter all fields</string>
+    <string name="error_delete">Error Deleting item</string>
+    <string name="delete_success">Item Deleted</string>
+    <string name="error_update">Error Updating item</string>
+    <string name="update_success">Item Updated</string>
+    <string name="edit">Edit Item</string>
+    <string name="permission_title">Permission necessary</string>
+    <string name="permission_message">permission is necessary</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="external_storage">External storage</string>
+</resources>

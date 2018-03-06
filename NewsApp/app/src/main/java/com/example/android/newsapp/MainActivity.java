@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
-        searchButton = (Button)findViewById(R.id.search_button);
+        searchButton = (Button) findViewById(R.id.search_button);
         searchEditText = (EditText) findViewById(R.id.search_view);
         final LoaderManager loaderManager = getLoaderManager();
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -88,14 +88,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String max_article = sharedPreferences.getString(getString(R.string.settings_max_articles_key),getString(R.string.settings_max_articles_default));
+        String max_article = sharedPreferences.getString(getString(R.string.settings_max_articles_key), getString(R.string.settings_max_articles_default));
         Uri baseUri = Uri.parse(NEWS_REQUEST_URL);
         Uri.Builder uriBuilder = baseUri.buildUpon();
-        uriBuilder.appendQueryParameter("page-size",max_article);
-        uriBuilder.appendQueryParameter("show-fields","thumbnail");
-        uriBuilder.appendQueryParameter("api-key","test");
-        uriBuilder.appendQueryParameter("q",searchEditText.getText().toString());
-        return new NewsLoader(this,uriBuilder.toString());
+        uriBuilder.appendQueryParameter("page-size", max_article);
+        uriBuilder.appendQueryParameter("show-fields", "thumbnail");
+        uriBuilder.appendQueryParameter("api-key", "test");
+        uriBuilder.appendQueryParameter("q", searchEditText.getText().toString());
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     @Override

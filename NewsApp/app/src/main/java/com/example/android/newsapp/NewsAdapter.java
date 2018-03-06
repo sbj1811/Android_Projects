@@ -37,8 +37,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItemView = convertView;
-        if (listItemView ==  null){
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent,false);
+        if (listItemView == null) {
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
         final News news = getItem(position);
@@ -57,7 +57,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
             final Date dateObj = sdf_date_1.parse(dateObject);
             final SimpleDateFormat sdf_date_2 = new SimpleDateFormat("MMM dd,yyyy\nh:mm a");
             date = sdf_date_2.format(dateObj);
-        } catch (ParseException p){
+        } catch (ParseException p) {
             Log.e(LOG_TAG, "Problem parsing date", p);
         }
         dateView.setText(date);
@@ -68,7 +68,6 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         TextView typeView = (TextView) listItemView.findViewById(R.id.news_type);
         typeView.setText(news.getNewsType());
-
 
 
         return listItemView;

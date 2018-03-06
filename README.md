@@ -85,3 +85,12 @@ http://open-platform.theguardian.com/
 ![News App][News-App]
 
 [News-App]: ./NewsApp/media/app_screenshot.png
+
+## Inventory App
+===================================
+
+This app tracks the inventory of a retail store using SQLite database.
+
+![Inventory App][Inventory-App]
+
+[Inventory-App]: ./InventoryApp/media/app_screenshot.png
