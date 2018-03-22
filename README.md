@@ -3,32 +3,6 @@
 #### Version: 1.0
 #### Author: Shaunak Jani
 
-## Local Business App
-===================================
-Single Page App
-
-![Local Business App][Local-Business-app]
-
-[Local-Business-app]: ./LocalBusinessApp/media/app_screenshot.png
-
-## Football Score App
-===================================
-
-This app keeps track score using manual input.
-
-![Football Score App][Football-Score-app]
-
-[Football-Score-app]: ./FootballScore/media/app_screenshot.png
-
-## Andriod Quiz App
-===================================
-
-This app Quizes user with pre coded questions and displays the final result.
-
-![Andriod Quiz App][Andriod-Quiz-app]
-
-[Andriod-Quiz-app]: ./QuizApp/media/app_screenshot.png
-
 ## Miwok Translator App
 ===================================
 
