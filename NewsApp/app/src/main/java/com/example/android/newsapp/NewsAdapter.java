@@ -4,6 +4,7 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,31 +26,36 @@ import java.util.List;
  * Created by sjani on 2/21/2018.
  */
 
-public class NewsAdapter extends ArrayAdapter<News> {
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsAdapterViewHolder> {
 
     private static final String LOG_TAG = NewsAdapter.class.getSimpleName();
+    private List<News> NewsList;
+    private final OnItemClickListener mClickHandlar;
+    private Context mContext;
 
-    public NewsAdapter(@NonNull Context context, @NonNull List<News> objects) {
-        super(context, 0, objects);
+    public NewsAdapter(List<News> newsList,OnItemClickListener clickHandler) {
+        NewsList = newsList;
+        mClickHandlar = clickHandler;
     }
 
-    @NonNull
+    public interface OnItemClickListener  {
+        void onClick(News news);
+    }
+
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItemView = convertView;
-        if (listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
-        }
+    public NewsAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
+        View newsView = LayoutInflater.from(mContext).inflate(R.layout.list_item, parent, false);
+        NewsAdapterViewHolder newsAdapterViewHolder = new NewsAdapterViewHolder(newsView);
+        return newsAdapterViewHolder;
+    }
 
-        final News news = getItem(position);
+    @Override
+    public void onBindViewHolder(NewsAdapterViewHolder holder, int position) {
+        News news = NewsList.get(position);
+        Picasso.with(mContext).load(news.getNewsThumbnail()).into(holder.imageView);
+        holder.titleView.setText(news.getNewsHeadline());
 
-        ImageView imageView = (ImageView) listItemView.findViewById(R.id.news_image);
-        Picasso.with(getContext()).load(news.getNewsThumbnail()).into(imageView);
-
-        TextView titleView = (TextView) listItemView.findViewById(R.id.news_title);
-        titleView.setText(news.getNewsHeadline());
-
-        TextView dateView = (TextView) listItemView.findViewById(R.id.news_date);
         String dateObject = news.getNewsDate();
         String date = "";
         try {
@@ -60,18 +66,56 @@ public class NewsAdapter extends ArrayAdapter<News> {
         } catch (ParseException p) {
             Log.e(LOG_TAG, "Problem parsing date", p);
         }
-        dateView.setText(date);
+        holder.dateView.setText(date);
+
+        holder.sectionView.setText(news.getNewsSection());
+        holder.typeView.setText(news.getNewsType());
+        holder.bind(news,mClickHandlar);
+    }
+
+    @Override
+    public int getItemCount() {
+        return NewsList.size();
+    }
+
+    public class NewsAdapterViewHolder extends RecyclerView.ViewHolder {
+
+        public final ImageView imageView;
+        public final TextView titleView;
+        public final TextView dateView;
+        public final TextView sectionView;
+        public final TextView typeView;
+
+        public NewsAdapterViewHolder(View view){
+            super(view);
+            imageView = (ImageView) view.findViewById(R.id.news_image);
+            titleView = (TextView) view.findViewById(R.id.news_title);
+            dateView = (TextView) view.findViewById(R.id.news_date);
+            sectionView = (TextView) view.findViewById(R.id.news_section);
+            typeView = (TextView) view.findViewById(R.id.news_type);
+        }
+
+        public void bind (final News news, final OnItemClickListener listener){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onClick(news);
+                }
+            });
+        }
 
 
-        TextView sectionView = (TextView) listItemView.findViewById(R.id.news_section);
-        sectionView.setText(news.getNewsSection());
 
-        TextView typeView = (TextView) listItemView.findViewById(R.id.news_type);
-        typeView.setText(news.getNewsType());
+    }
 
+    public void addAll(List<News> newsList){
+        NewsList = newsList;
+        notifyDataSetChanged();
+    }
 
-        return listItemView;
-
+    public void clear(){
+        NewsList.clear();
+        notifyDataSetChanged();
     }
 
 }

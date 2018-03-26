@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.android.quakereport.EarthquakeActivity">
+    tools:context="com.example.android.newsapp.MainActivity">
+
+    <item android:id="@+id/search"
+        android:title="@string/search_title"
+        android:icon="@drawable/ic_search"
+        myapp:showAsAction="collapseActionView|ifRoom"
+        myapp:actionViewClass="android.widget.SearchView" />
+
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings_title"
         android:icon="@drawable/ic_filter"
         android:orderInCategory="1"
-        app:showAsAction="ifRoom" />
+        myapp:showAsAction="ifRoom" />
 </menu>
