@@ -54,7 +54,7 @@ public class DetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        Movies movie =  (Movies) intent.getParcelableExtra("thisMovie");
+        Movies movie =  (Movies) intent.getParcelableExtra(MOVIE_KEY);
         if (movie != null) {
             Log.e(TAG, "Movies: "+movie.toString());
             titleTexyView.setText(movie.getTitle());

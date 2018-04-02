@@ -4,14 +4,18 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,9 +39,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private MovieViewAdapter movieViewAdapter;
     private static final String MOVIE_KEY = "thisMovie";
-    public static final String POPULAR = "popular";
-    public static final String TOP_RATED = "top_rated";
+
     private static final int LOADER_ID = 1;
+
+    private String sortOrder;
 
     @BindView(R.id.rv_main)
     RecyclerView recyclerView;
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onItemClick(Movies movie) {
  //             Toast.makeText(MainActivity.this, "This is my Toast message!",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this,DetailActivity.class);
-                intent.putExtra("thisMovie",movie);
+                intent.putExtra(MOVIE_KEY,movie);
                 Log.e(TAG, "CLICK: "+movie);
                 startActivity(intent);
             }
@@ -93,8 +98,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<List<Movies>> onCreateLoader(int i, Bundle bundle) {
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sortOrder = sharedPreferences.getString(
+                getString(R.string.settings_sort_key),
+                getString(R.string.settings_sort_popular)
+        );
         String apiKey = this.getString(R.string.apiKey);
-        return new MovieLoader(this, POPULAR, apiKey);
+        return new MovieLoader(this, sortOrder, apiKey);
     }
 
     @Override
@@ -115,4 +125,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<List<Movies>> loader) {
         movieViewAdapter.clear();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.sort_setting){
+            startActivity(new Intent(this,SettingsActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 }

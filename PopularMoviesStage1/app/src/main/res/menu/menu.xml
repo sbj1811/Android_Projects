@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myapp="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.android.newsapp.MainActivity">
+
+    <item android:id="@+id/sort_setting"
+        android:title="@string/settings_title"
+        android:icon="@drawable/ic_more_vert"
+        myapp:showAsAction="never"
+        android:orderInCategory="100" />
+
+</menu>

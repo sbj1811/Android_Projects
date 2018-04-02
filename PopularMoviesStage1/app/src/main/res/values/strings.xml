@@ -8,10 +8,18 @@
     <string name="overview_header">Synopsis:</string>
     <string name="LoremIpsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
  // TODO Add your API Key here
-    <string name="apiKey">fe976ceb4b88254d8c29d92f3d788889</string>
+    <string name="apiKey"></string>
     <string name="image_base_url">http://image.tmdb.org/t/p/w500</string>
     <string name="no_internet">No Internet connection</string>
     <string name="no_movies">No Movies to display</string>
     <string name="no_overview"></string>
+    <string name="settings_title">Settings</string>
+    <string name="setting_sort_header">Sort By</string>
+    <string name="settings_sort_key" translatable="false">sort_by</string>
+    <string name="settings_sort_popular_header">Most Popular</string>
+    <string name="settings_sort_popular" translatable="false">popular</string>
+    <string name="settings_sort_toprated_header">Top Rated</string>
+    <string name="settings_sort_toprated" translatable="false">top_rated</string>
+
 
 </resources>
