@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
@@ -61,8 +62,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ButterKnife.bind(this);
 
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(layoutManager);
+//        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+//        recyclerView.setLayoutManager(layoutManager);
+
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        }
+        else{
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        }
 
         movieViewAdapter =  new MovieViewAdapter(new ArrayList<Movies>(), new MovieViewAdapter.OnItemClickListener() {
             @Override
