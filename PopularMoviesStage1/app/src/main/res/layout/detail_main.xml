@@ -1,124 +1,149 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_backdrop"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/backdrop_height"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/backdrop" />
-        
-        <android.support.constraint.Guideline
-            android:id="@+id/guidline_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.27"   />
-
-        <ImageView
-            android:id="@+id/iv_poster"
-            android:layout_width="@dimen/poster_width"
-            android:layout_height="@dimen/poster_height"
-            android:layout_marginLeft="@dimen/standard_dimen"
-            android:layout_above="@id/ll_overview"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:shadowColor="#212121"
-            android:shadowRadius="5"
-            android:shadowDy="5"
-            tools:src="@drawable/poster" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_favorites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/standard_dimen"
-            android:layout_marginEnd="16dp"
-            app:fabSize="normal"
-            android:layout_above="@id/tv_release_date"
-            android:layout_alignParentRight="true"
-            app:srcCompat="@drawable/ic_favorite_border_white_24dp" />
-
-        <LinearLayout
-            android:id="@+id/ll_title_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/standard_dimen"
-            android:layout_marginRight="@dimen/standard_dimen"
-            android:layout_toLeftOf="@id/fab_favorites"
-            android:layout_below="@id/iv_backdrop">
-
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/header_medium"
-                tools:text="Movie Title" />
-
-            <TextView
-                android:id="@+id/tv_release_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_regular"
-                tools:text="August 25, 2018" />
-
-            <TextView
-                android:id="@+id/tv_voting_average"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/text_regular"
-                tools:text="6.1/7" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/_overview_header"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/standard_dimen"
-            android:layout_below="@id/ll_title_info"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_overview_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/overview_header"
-                android:textSize="@dimen/header_small"/>
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/ll_overview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/standard_dimen"
             android:layout_below="@id/ll_title_info"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/overview_header"
-                android:textSize="@dimen/header_small"/>
+                android:background="@color/colorPrimaryDark">
 
-            <TextView
-                android:id="@+id/tv_overview"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/iv_backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/backdrop_height"
+                    android:scaleType="centerCrop"
+                    tools:src="@drawable/backdrop" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guidline_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.27" />
+
+                <ImageView
+                    android:id="@+id/iv_poster"
+                    android:layout_width="@dimen/poster_width"
+                    android:layout_height="@dimen/poster_height"
+                    android:layout_above="@id/ll_overview"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/standard_dimen"
+                    android:shadowColor="@color/colorWhite"
+                    android:shadowDy="5"
+                    android:shadowRadius="5"
+                    tools:src="@drawable/poster" />
+
+                <LinearLayout
+                    android:id="@+id/ll_title_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/iv_backdrop"
+                    android:layout_toRightOf="@id/iv_poster"
+                    android:orientation="vertical"
+                    android:padding="@dimen/standard_dimen">
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/header_medium"
+                        android:textStyle="bold"
+                        tools:text="Movie Title" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/release_header"
+                            android:textColor="@color/colorHeaderSecondary"
+                            android:textSize="@dimen/text_regular"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_release_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_regular"
+                            tools:text="August 25, 2018" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/vote_header"
+                            android:textColor="@color/colorHeaderSecondary"
+                            android:textSize="@dimen/text_regular"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_voting_average"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/text_regular"
+                            tools:text="6.1/7" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="@string/LoremIpsum"/>
+                android:orientation="vertical"
+                android:padding="@dimen/standard_dimen">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/standard_dimen"
+                    android:text="@string/overview_header"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorHeaderSecondary"
+                    android:textSize="@dimen/header_small" />
+
+                <TextView
+                    android:id="@+id/tv_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    tools:text="@string/LoremIpsum" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
-
-
 
 
     </RelativeLayout>

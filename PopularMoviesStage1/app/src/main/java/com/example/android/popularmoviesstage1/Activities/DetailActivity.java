@@ -16,6 +16,10 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,15 +53,33 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.detail_main);
 
         ButterKnife.bind(this);
-        Movies movie =  (Movies) getIntent().getParcelableExtra("thisMovie");
+        Intent intent = getIntent();
+        Movies movie =  (Movies) intent.getParcelableExtra("thisMovie");
         if (movie != null) {
+            Log.e(TAG, "Movies: "+movie.toString());
             titleTexyView.setText(movie.getTitle());
-            overviewTextView.setText(movie.getOverview());
-            releaseDateTextView.setText(movie.getReleaseDate());
-            String vote = movie.getVoteAverage() + "/7";
+            if (movie.getOverview().equals("false")){
+                overviewTextView.setText(this.getString(R.string.no_overview));
+            } else {
+                overviewTextView.setText(movie.getOverview());
+            }
+            String dateObject = movie.getReleaseDate();
+            String date = "";
+            try {
+                final SimpleDateFormat sdf_date_1 = new SimpleDateFormat("yyyy-MM-dd");
+                final Date dateObj = sdf_date_1.parse(dateObject);
+                final SimpleDateFormat sdf_date_2 = new SimpleDateFormat("MMM dd, yyyy");
+                date = " " + sdf_date_2.format(dateObj);
+            } catch (ParseException p) {
+                Log.e(TAG, "Problem parsing date", p);
+            }
+            releaseDateTextView.setText(date);
+            String vote = " "+ movie.getVoteAverage() + "/10";
             votingtextView.setText(vote);
-            String posterImageUrl = R.string.image_base_url + movie.getPosterPath();
-            String backdropImageUrl = R.string.image_base_url + movie.getBackdropPath();
+            String posterImageUrl = this.getString(R.string.image_base_url) + movie.getPosterPath();
+            String backdropImageUrl = this.getString(R.string.image_base_url) + movie.getBackdropPath();
+            Log.e(TAG, "posterImageUrl: "+posterImageUrl);
+            Log.e(TAG, "backdropImageUrl: "+backdropImageUrl);
             Picasso.with(posterImageView.getContext())
                     .load(posterImageUrl)
                     .into(posterImageView);

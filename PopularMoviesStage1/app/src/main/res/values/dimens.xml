@@ -6,5 +6,5 @@
     <dimen name="standard_dimen">16dp</dimen>
     <dimen name="header_medium">24sp</dimen>
     <dimen name="header_small">20sp</dimen>
-    <dimen name="text_regular">16sp</dimen>
+    <dimen name="text_regular">18sp</dimen>
 </resources>
