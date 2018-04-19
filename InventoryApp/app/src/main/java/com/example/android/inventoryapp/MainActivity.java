@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements
                 Log.e("MAINACTIVITY", "onItemClick: ID= "+id);
                 Uri uri = ContentUris.withAppendedId(ItemContract.ItemEntry.CONTENT_URI,id);
                 intent.setData(uri);
+                intent.putExtra("selected_item_id",id);
                 startActivity(intent);
 
             }

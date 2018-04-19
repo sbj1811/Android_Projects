@@ -198,11 +198,14 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
-
+    int selectedId = getIntent().getExtras().getInt("selected_item_id",0);
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         Log.e("EDITACTIVITY", "onCreateLoader: ");
+
+
+
         String[] projection = {
                 ItemContract.ItemEntry._ID,
                 ItemContract.ItemEntry.COLUMN_ITEM_NAME,
@@ -211,7 +214,9 @@ public class EditActivity extends AppCompatActivity implements LoaderManager.Loa
                 ItemContract.ItemEntry.COLUMN_ITEM_IMAGE
         };
         Log.e("EDITACTIVITY", "onCreateLoader: "+projection[0]+" "+projection[1]+" "+projection[2]+" "+projection[3]);
-        return new CursorLoader(this, ItemContract.ItemEntry.CONTENT_URI,projection,null,null,null);
+        String selection = ItemContract.ItemEntry._ID + "=?";
+        String[] selectionArgs = { String.valueOf(selectedId) };
+        return new CursorLoader(this, ItemContract.ItemEntry.CONTENT_URI,projection,selection,selectionArgs,null);
     }
 
     @Override
