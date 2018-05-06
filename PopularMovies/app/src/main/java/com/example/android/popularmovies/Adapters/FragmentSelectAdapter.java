@@ -29,15 +29,15 @@ public class FragmentSelectAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == 0) {
             sortOrder = mContext.getString(R.string.settings_sort_popular);
-            Fragment popularFragment =  MovieFragment.newInstance(sortOrder);
+            Fragment popularFragment =  MovieFragment.newInstance(sortOrder,position);
             return popularFragment;
         } else if (position == 1){
             sortOrder = mContext.getString(R.string.settings_sort_toprated);
-            Fragment topratedFragment =  MovieFragment.newInstance(sortOrder);
+            Fragment topratedFragment =  MovieFragment.newInstance(sortOrder,position);
             return topratedFragment;
         } else {
             sortOrder = mContext.getString(R.string.settings_sort_fav);
-            Fragment favFragment =   MovieFragment.newInstance(sortOrder);
+            Fragment favFragment =   MovieFragment.newInstance(sortOrder,position);
             return favFragment;
         }
     }

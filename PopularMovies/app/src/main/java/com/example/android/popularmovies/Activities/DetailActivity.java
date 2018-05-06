@@ -3,6 +3,7 @@ package com.example.android.popularmovies.Activities;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Movie;
 import android.net.Uri;
 import android.os.Bundle;

@@ -10,6 +10,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,6 +45,11 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
             MovieContract.MovieEntry.COLUMN_MOVIE_ID,
             MovieContract.MovieEntry.COLUMN_POSTER_PATH
     };
+    private static final Uri[] CONTENT_URI_VARIANTS = new Uri[]{
+            MovieContract.MovieEntry.CONTENT_URI_POPULAR,
+            MovieContract.MovieEntry.CONTENT_URI_TOP_RATED,
+            MovieContract.MovieEntry.CONTENT_URI_FAVORITES
+    };
     private static final int LOADER_ID = 1;
     @BindView(R.id.rv_main)
     RecyclerView recyclerView;
@@ -54,14 +60,16 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
     private MovieViewAdapter movieViewAdapter;
     private Uri uri;
     private String sortOrder;
+    private boolean mDualPane;
 
     public MovieFragment() {
 
     }
 
-    public static MovieFragment newInstance(String mSortOrder) {
+    public static MovieFragment newInstance(String mSortOrder,int position) {
         Bundle arguments = new Bundle();
         MovieFragment fragment = new MovieFragment();
+        arguments.putParcelable("CONTENT_URI",CONTENT_URI_VARIANTS[position]);
         arguments.putString("SortOrder", mSortOrder);
         fragment.setArguments(arguments);
         return fragment;
@@ -77,6 +85,7 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        uri = getArguments().getParcelable("CONTENT_URI");
         getLoaderManager().initLoader(LOADER_ID,null,this);
     }
 
@@ -99,10 +108,14 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
 
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        } else {
+        } else if(getResources().getBoolean(R.bool.landscape_details_disallowed)){
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         }
 
+        View detailsView = getActivity().findViewById(R.id.details);
+        mDualPane = detailsView != null && detailsView.getVisibility() == View.VISIBLE;
     }
 
     @Override
@@ -112,7 +125,7 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
 //                getString(R.string.settings_sort_key),
 //                getString(R.string.settings_sort_popular)
 //        );
-
+        Log.e(TAG, "onCreateLoader: CREATING LOADER");
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             sortOrder = bundle.getString("SortOrder");
@@ -121,12 +134,15 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
         }
         if (sortOrder.equals("popular")) {
             uri = MovieContract.MovieEntry.CONTENT_URI_POPULAR;
+            Log.e(TAG, "onCreateLoader: URI: "+uri);
             return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
         } else if (sortOrder.equals("top_rated")) {
+            Log.e(TAG, "onCreateLoader: URI: "+uri);
             uri = MovieContract.MovieEntry.CONTENT_URI_TOP_RATED;
             return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
         } else {
             uri = MovieContract.MovieEntry.CONTENT_URI_FAVORITES;
+            Log.e(TAG, "onCreateLoader: URI"+uri);
             return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
         }
     }
@@ -149,9 +165,21 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
 
     @Override
     public void onGridItemClick(int clickedMovieId) {
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("URI", uri);
-        intent.putExtra("MOVIE_ID", clickedMovieId);
-        startActivity(intent);
+        if(mDualPane){
+            Log.e(TAG, "onGridItemClick DualPane: URI"+uri+" MOVIE_ID: "+clickedMovieId);
+            DetailFragment detailFragment = DetailFragment.newInstance(uri,clickedMovieId);
+            getFragmentManager().beginTransaction()
+                    .add(R.id.details,detailFragment)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .addToBackStack(null)
+                    .commit();
+
+        } else {
+            Log.e(TAG, "onGridItemClick: URI"+uri+" MOVIE_ID: "+clickedMovieId);
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            intent.putExtra("URI", uri);
+            intent.putExtra("MOVIE_ID", clickedMovieId);
+            startActivity(intent);
+        }
     }
 }
