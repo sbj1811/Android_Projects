@@ -65,6 +65,9 @@ public class Movies implements Parcelable
         this.releaseDate = ((String) in.readValue((String.class.getClassLoader())));
     }
 
+    public int getId() {
+        return id;
+    }
 
     public float getVoteAverage() {
         return voteAverage;

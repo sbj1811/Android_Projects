@@ -1,7 +1,10 @@
 package com.example.android.popularmovies.Adapters;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Movie;
+import android.support.transition.Transition;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
+import com.example.android.popularmovies.Data.MovieContract;
 import com.example.android.popularmovies.Models.Movies;
 import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
@@ -27,24 +31,25 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
     private static final String TAG = MovieViewAdapter.class.getSimpleName();
 
-    private List<Movies> moviesList;
+  //  private List<Movies> moviesList;
 
-    private  OnItemClickListener mclickHandler;
+    private  final GridItemClickListener mclickHandler;
 
     private Context context;
 
-    public interface OnItemClickListener {
-        void onItemClick(Movies movie);
+    private Cursor cursor;
+
+    public interface GridItemClickListener {
+        void onGridItemClick(int clickedMovieId);
     }
 
-    public MovieViewAdapter (List<Movies> movies, OnItemClickListener listener){
-        moviesList = movies;
+    public MovieViewAdapter (GridItemClickListener listener, Context mContext){
+        context = mContext;
         mclickHandler = listener;
     }
 
     @Override
     public MovieViewAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context =  parent.getContext();
         View movieView = LayoutInflater.from(context).inflate(R.layout.grid_item,parent,false);
         MovieViewAdapterViewHolder viewHolder = new MovieViewAdapterViewHolder(movieView);
         return viewHolder;
@@ -52,22 +57,40 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieViewAdapterViewHolder holder, int position) {
-        Movies movie = moviesList.get(position);
-        String posterImageUrl = context.getString(R.string.image_base_url)+movie.getPosterPath();
+    //    Movies movie = moviesList.get(position);
+        int movieIdIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
+        int posterIndex = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_POSTER_PATH);
+        cursor.moveToPosition(position);
+        String posterImageUrl = context.getString(R.string.image_base_url)+cursor.getString(posterIndex);
         Picasso.with(holder.imageView.getContext())
                 .load(posterImageUrl)
                 .into(holder.imageView);
-        holder.bind(movie,mclickHandler);
+  //      holder.bind(movie,mclickHandler);
     }
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        if(cursor == null){
+            return 0;
+        }
+        return cursor.getCount();
     }
 
+    public Cursor swapCursor(Cursor c) {
+        if (cursor == c) {
+            return null;
+        }
 
+        Cursor temp = cursor;
+        this.cursor = c;
 
-    public class MovieViewAdapterViewHolder extends RecyclerView.ViewHolder {
+        if (c != null) {
+            this.notifyDataSetChanged();
+        }
+        return temp;
+    }
+
+    public class MovieViewAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.iv_grid)
         ImageView imageView;
@@ -75,28 +98,19 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
         public MovieViewAdapterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
+            itemView.setOnClickListener(this);
         }
 
 
-        public void bind (final Movies movie, final OnItemClickListener listener){
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onItemClick(movie);
-                }
-            });
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            cursor.moveToPosition(adapterPosition);
+            int index = cursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_ID);
+            int movieId = cursor.getInt(index);
+            mclickHandler.onGridItemClick(movieId);
         }
-
-
     }
 
-    public void clear(){
-        moviesList.clear();
-        notifyDataSetChanged();
-    }
 
-    public void addAll(List<Movies> movieslist){
-        moviesList = movieslist;
-        notifyDataSetChanged();
-    }
 }

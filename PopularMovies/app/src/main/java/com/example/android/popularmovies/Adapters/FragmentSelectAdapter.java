@@ -36,7 +36,7 @@ public class FragmentSelectAdapter extends FragmentPagerAdapter {
             Fragment topratedFragment =  MovieFragment.newInstance(sortOrder);
             return topratedFragment;
         } else {
-            sortOrder = mContext.getString(R.string.settings_sort_toprated);
+            sortOrder = mContext.getString(R.string.settings_sort_fav);
             Fragment favFragment =   MovieFragment.newInstance(sortOrder);
             return favFragment;
         }

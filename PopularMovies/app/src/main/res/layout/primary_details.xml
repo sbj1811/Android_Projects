@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimaryDark">
+
+
+    <ImageView
+        android:id="@+id/iv_backdrop"
+        android:layout_width="401dp"
+        android:layout_height="171dp"
+        android:contentDescription="@string/background_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backdrop" />
+
+    <ImageView
+        android:id="@+id/iv_poster"
+        android:layout_width="117dp"
+        android:layout_height="178dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="120dp"
+        android:contentDescription="@string/background_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_backdrop"
+        app:srcCompat="@drawable/poster" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fav_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="28dp"
+        android:scaleType="center"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_poster"
+        android:src="@drawable/ic_favorite_border" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/header_medium"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/iv_poster"
+        app:layout_constraintTop_toBottomOf="@+id/fav_button"
+        tools:text="Movie Title" />
+
+    <TextView
+        android:id="@+id/release_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/release_header"
+        android:textColor="@color/colorHeaderSecondary"
+        android:textSize="@dimen/text_regular"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_release_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintStart_toEndOf="@+id/release_header"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        tools:text="August 25, 2018" />
+
+    <TextView
+        android:id="@+id/vote_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vote_header"
+        android:textColor="@color/colorHeaderSecondary"
+        android:textSize="@dimen/text_regular"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/release_header" />
+
+    <TextView
+        android:id="@+id/tv_voting_average"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_regular"
+        app:layout_constraintStart_toEndOf="@+id/vote_header"
+        app:layout_constraintTop_toBottomOf="@+id/release_header"
+        tools:text="6.1/7" />
+
+
+</android.support.constraint.ConstraintLayout>

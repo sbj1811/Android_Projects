@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Popular Movies Stage 1</string>
+    <string name="app_name">Popular Movies</string>
     <string name="error_message">
         An error has occurred. Please try again by clicking REFRESH
     </string>
@@ -7,6 +7,8 @@
     <string name="vote_header">Rating: </string>
     <string name="overview_header">Synopsis:</string>
     <string name="LoremIpsum">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</string>
+    <string name="trailer_header">Trailers:</string>
+    <string name="review_header">Reviews:</string>
  // TODO Add your API Key here
     <string name="apiKey"></string>
     <string name="image_base_url">http://image.tmdb.org/t/p/w500</string>
@@ -21,6 +23,8 @@
     <string name="settings_sort_toprated_header">Top Rated</string>
     <string name="settings_sort_toprated" translatable="false">top_rated</string>
     <string name="settings_sort_fav_header">Favorite</string>
+    <string name="settings_sort_fav" translatable="false">favorite</string>
+    <string name="background_image">Image</string>
 
 
 </resources>

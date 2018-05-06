@@ -1,37 +1,32 @@
 package com.example.android.popularmovies.Fragments;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.android.popularmovies.Activities.DetailActivity;
-import com.example.android.popularmovies.Activities.MainActivity;
-import com.example.android.popularmovies.Activities.SettingsActivity;
+import com.example.android.popularmovies.Adapters.MovieSyncAdapter;
 import com.example.android.popularmovies.Adapters.MovieViewAdapter;
-import com.example.android.popularmovies.Models.Movies;
+import com.example.android.popularmovies.Data.MovieContract;
+import com.example.android.popularmovies.Models.AccountModel;
 import com.example.android.popularmovies.R;
-import com.example.android.popularmovies.Utils.MovieLoader;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,33 +36,48 @@ import butterknife.ButterKnife;
  * Created by sjani on 4/28/2018.
  */
 
-public class MovieFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<List<Movies>> {
+public class MovieFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>, MovieViewAdapter.GridItemClickListener {
 
 
     private static final String TAG = MovieFragment.class.getSimpleName();
-
-    private MovieViewAdapter movieViewAdapter;
-    private static final String MOVIE_KEY = "thisMovie";
-
+    private static final String[] PROJECTION = new String[]{
+            MovieContract.MovieEntry.COLUMN_MOVIE_ID,
+            MovieContract.MovieEntry.COLUMN_POSTER_PATH
+    };
     private static final int LOADER_ID = 1;
-
-    private String sortOrder;
-
     @BindView(R.id.rv_main)
     RecyclerView recyclerView;
-
     @BindView(R.id.tv_error_message_display)
     TextView emptyTextView;
-
     @BindView(R.id.pb_loading_indicator)
     ProgressBar progressBar;
+    private MovieViewAdapter movieViewAdapter;
+    private Uri uri;
+    private String sortOrder;
+
+    public MovieFragment() {
+
+    }
 
     public static MovieFragment newInstance(String mSortOrder) {
         Bundle arguments = new Bundle();
         MovieFragment fragment = new MovieFragment();
-        arguments.putString("SortOrder",mSortOrder);
+        arguments.putString("SortOrder", mSortOrder);
         fragment.setArguments(arguments);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        AccountModel.createSyncAccount(getContext());
+        MovieSyncAdapter.performSync();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getLoaderManager().initLoader(LOADER_ID,null,this);
     }
 
     @Nullable
@@ -81,79 +91,67 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sortOrder = getArguments().getString("SortOrder");
-        Log.e(TAG, "SORTORDER: "+sortOrder );
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
-//        recyclerView.setHasFixedSize(true);
-//        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-//        recyclerView.setLayoutManager(layoutManager);
-
-        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        }
-        else{
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
-        }
-
-        movieViewAdapter =  new MovieViewAdapter(new ArrayList<Movies>(), new MovieViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Movies movie) {
-                //             Toast.makeText(MainActivity.this, "This is my Toast message!",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(),DetailActivity.class);
-                intent.putExtra(MOVIE_KEY,movie);
-                Log.e(TAG, "CLICK: "+movie);
-                startActivity(intent);
-            }
-        });
+        movieViewAdapter = new MovieViewAdapter(this, getActivity());
 
         recyclerView.setAdapter(movieViewAdapter);
 
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        final NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        android.support.v4.app.LoaderManager loaderManager = getLoaderManager();
-        if (activeNetwork != null && activeNetwork.isConnectedOrConnecting()) {
-            loaderManager.destroyLoader(LOADER_ID);
-            loaderManager.initLoader(LOADER_ID, null,this);
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         } else {
-            recyclerView.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
-            emptyTextView.setVisibility(View.VISIBLE);
-            emptyTextView.setText(R.string.no_internet);
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         }
 
     }
 
     @Override
-    public Loader<List<Movies>> onCreateLoader(int id, Bundle args) {
-        recyclerView.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //        sortOrder = sharedPreferences.getString(
 //                getString(R.string.settings_sort_key),
 //                getString(R.string.settings_sort_popular)
 //        );
-        String apiKey = this.getString(R.string.apiKey);
-        return new MovieLoader(getContext(), sortOrder, apiKey);
-    }
 
-    @Override
-    public void onLoadFinished(Loader<List<Movies>> loader, List<Movies> movies) {
-        progressBar.setVisibility(View.GONE);
-        emptyTextView.setText(R.string.no_movies);
-
-        movieViewAdapter.clear();
-
-        if (movies != null && !movies.isEmpty()) {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyTextView.setVisibility(View.GONE);
-            movieViewAdapter.addAll(movies);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            sortOrder = bundle.getString("SortOrder");
+        } else {
+            Log.e(TAG, "BUNDLE: NULL");
+        }
+        if (sortOrder.equals("popular")) {
+            uri = MovieContract.MovieEntry.CONTENT_URI_POPULAR;
+            return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
+        } else if (sortOrder.equals("top_rated")) {
+            uri = MovieContract.MovieEntry.CONTENT_URI_TOP_RATED;
+            return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
+        } else {
+            uri = MovieContract.MovieEntry.CONTENT_URI_FAVORITES;
+            return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
         }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Movies>> loader) {
-        movieViewAdapter.clear();
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        movieViewAdapter.swapCursor(data);
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        if (movieViewAdapter != null) {
+            movieViewAdapter.swapCursor(null);
+        }
+    }
+
+
+    @Override
+    public void onGridItemClick(int clickedMovieId) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra("URI", uri);
+        intent.putExtra("MOVIE_ID", clickedMovieId);
+        startActivity(intent);
     }
 }
