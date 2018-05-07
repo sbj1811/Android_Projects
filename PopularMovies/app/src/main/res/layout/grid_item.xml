@@ -7,10 +7,7 @@
 
     <ImageView
         android:id="@+id/iv_grid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
+        style="@style/main_grid_image"
         tools:src="@drawable/poster"/>
 
 </FrameLayout>

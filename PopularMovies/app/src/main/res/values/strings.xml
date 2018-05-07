@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Popular Movies</string>
+    <string name="select_movie">Please select a movie from the list.</string>
     <string name="error_message">
         An error has occurred. Please try again by clicking REFRESH
     </string>
@@ -10,10 +11,12 @@
     <string name="trailer_header">Trailers:</string>
     <string name="review_header">Reviews:</string>
  // TODO Add your API Key here
-    <string name="apiKey"></string>
+    <string name="apiKey">fe976ceb4b88254d8c29d92f3d788889</string>
     <string name="image_base_url">http://image.tmdb.org/t/p/w500</string>
     <string name="no_internet">No Internet connection</string>
-    <string name="no_movies">No Movies to display</string>
+    <string name="no_movies">No Movies to display: Check Network Connection.</string>
+    <string name="no_trailers">No Trailers to display: Check Network Connection.</string>
+    <string name="no_reviews">No Reviews to display: Check Network Connection.</string>
     <string name="no_overview"></string>
     <string name="settings_title">Settings</string>
     <string name="setting_sort_header">Sort By</string>

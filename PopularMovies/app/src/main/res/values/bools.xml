@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <bool name="landscape_details_disallowed">false</bool>
+    <bool name="large_screen">false</bool>
+    <bool name="show_empty_fragment">false</bool>
 </resources>

@@ -30,6 +30,8 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     private static final String TAG = MovieSyncAdapter.class.getSimpleName();
 
     private String apiKey;
+    private String sortOrderP;
+    private String sortOrderT;
     private final ContentResolver contentResolver;
     private List<Movie> moviesPopular;
     private List<Movie> moviesToprated;
@@ -47,12 +49,14 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
         getFavmovies();
 
         apiKey = getContext().getResources().getString(R.string.apiKey);
-        moviesPopular = NetworkUtils.fetchMovieData("popular", apiKey);
+        sortOrderP = getContext().getResources().getString(R.string.settings_sort_popular);
+        moviesPopular = NetworkUtils.fetchMovieData(sortOrderP, apiKey);
         ContentValues[] popularContent = makeContentFromMoviesList(moviesPopular);
         contentResolver.delete(MovieContract.MovieEntry.CONTENT_URI_POPULAR,null,null);
         contentResolver.bulkInsert(MovieContract.MovieEntry.CONTENT_URI_POPULAR,popularContent);
 
-        moviesToprated = NetworkUtils.fetchMovieData("top_rated", apiKey);
+        sortOrderT = getContext().getResources().getString(R.string.settings_sort_toprated);
+        moviesToprated = NetworkUtils.fetchMovieData(sortOrderT, apiKey);
         ContentValues[] topratedContent = makeContentFromMoviesList(moviesToprated);
         contentResolver.delete(MovieContract.MovieEntry.CONTENT_URI_TOP_RATED,null,null);
         contentResolver.bulkInsert(MovieContract.MovieEntry.CONTENT_URI_TOP_RATED,topratedContent);

@@ -92,7 +92,6 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_layout, container, false);
 
     }
@@ -108,10 +107,10 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
 
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        } else if(getResources().getBoolean(R.bool.landscape_details_disallowed)){
+        } else if(getResources().getBoolean(R.bool.show_empty_fragment) && getResources().getBoolean(R.bool.large_screen)){
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
 
         View detailsView = getActivity().findViewById(R.id.details);
@@ -125,7 +124,6 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
 //                getString(R.string.settings_sort_key),
 //                getString(R.string.settings_sort_popular)
 //        );
-        Log.e(TAG, "onCreateLoader: CREATING LOADER");
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             sortOrder = bundle.getString("SortOrder");
@@ -134,15 +132,12 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
         }
         if (sortOrder.equals("popular")) {
             uri = MovieContract.MovieEntry.CONTENT_URI_POPULAR;
-            Log.e(TAG, "onCreateLoader: URI: "+uri);
             return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
         } else if (sortOrder.equals("top_rated")) {
-            Log.e(TAG, "onCreateLoader: URI: "+uri);
             uri = MovieContract.MovieEntry.CONTENT_URI_TOP_RATED;
             return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
         } else {
             uri = MovieContract.MovieEntry.CONTENT_URI_FAVORITES;
-            Log.e(TAG, "onCreateLoader: URI"+uri);
             return new CursorLoader(getActivity(), uri, PROJECTION, null, null, null);
         }
     }
@@ -166,16 +161,13 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
     @Override
     public void onGridItemClick(int clickedMovieId) {
         if(mDualPane){
-            Log.e(TAG, "onGridItemClick DualPane: URI"+uri+" MOVIE_ID: "+clickedMovieId);
             DetailFragment detailFragment = DetailFragment.newInstance(uri,clickedMovieId);
             getFragmentManager().beginTransaction()
                     .add(R.id.details,detailFragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .addToBackStack(null)
                     .commit();
-
         } else {
-            Log.e(TAG, "onGridItemClick: URI"+uri+" MOVIE_ID: "+clickedMovieId);
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             intent.putExtra("URI", uri);
             intent.putExtra("MOVIE_ID", clickedMovieId);
