@@ -17,6 +17,7 @@ import com.example.android.popularmovies.Models.AccountModel;
 import com.example.android.popularmovies.Models.Movies;
 import com.example.android.popularmovies.Networking.NetworkUtils;
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.Services.NotificationService;
 
 
 import java.util.List;
@@ -33,8 +34,7 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
     private String sortOrderP;
     private String sortOrderT;
     private final ContentResolver contentResolver;
-    private List<Movie> moviesPopular;
-    private List<Movie> moviesToprated;
+
 
     public MovieSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -57,9 +57,9 @@ public class MovieSyncAdapter extends AbstractThreadedSyncAdapter {
 
         sortOrderT = getContext().getResources().getString(R.string.settings_sort_toprated);
         moviesToprated = NetworkUtils.fetchMovieData(sortOrderT, apiKey);
-        ContentValues[] topratedContent = makeContentFromMoviesList(moviesToprated);
+        ContentValues[] topRatedContent = makeContentFromMoviesList(moviesToprated);
         contentResolver.delete(MovieContract.MovieEntry.CONTENT_URI_TOP_RATED,null,null);
-        contentResolver.bulkInsert(MovieContract.MovieEntry.CONTENT_URI_TOP_RATED,topratedContent);
+        contentResolver.bulkInsert(MovieContract.MovieEntry.CONTENT_URI_TOP_RATED,topRatedContent);
 
     }
 

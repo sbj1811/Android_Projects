@@ -108,7 +108,7 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         } else if(getResources().getBoolean(R.bool.show_empty_fragment) && getResources().getBoolean(R.bool.large_screen)){
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }

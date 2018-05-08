@@ -17,6 +17,8 @@
     <string name="no_movies">No Movies to display: Check Network Connection.</string>
     <string name="no_trailers">No Trailers to display: Check Network Connection.</string>
     <string name="no_reviews">No Reviews to display: Check Network Connection.</string>
+    <string name="notification_update">Movie added to favorite</string>
+    <string name="main_notification_channel_name">Primary</string>
     <string name="no_overview"></string>
     <string name="settings_title">Settings</string>
     <string name="setting_sort_header">Sort By</string>
@@ -28,6 +30,4 @@
     <string name="settings_sort_fav_header">Favorite</string>
     <string name="settings_sort_fav" translatable="false">favorite</string>
     <string name="background_image">Image</string>
-
-
 </resources>

@@ -30,6 +30,7 @@ import com.example.android.popularmovies.Models.TrailerList;
 import com.example.android.popularmovies.Networking.MovieDbApiConnection;
 import com.example.android.popularmovies.Networking.NetworkUtils;
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.Services.NotificationService;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -156,6 +157,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     favButton.setImageResource(R.drawable.ic_favorite);
                     isMarkedFavorite = true;
                     getActivity().getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI_FAVORITES, values);
+                    NotificationService.notifyUserAboutUpdate(getContext());
                 }
                 isMarkedFavorite = !isMarkedFavorite;
             }
