@@ -1,0 +1,4 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Baking App</string>
+    <string name="servings_text">Servings: <xliff:g id="count">%d</xliff:g></string>
+</resources>
