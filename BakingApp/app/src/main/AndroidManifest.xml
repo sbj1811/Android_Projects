@@ -31,8 +31,24 @@
             android:parentActivityName=".UI.RecipeList.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UI.RecipeList.MainActivity"/>
+                android:value=".UI.RecipeList.MainActivity" />
         </activity>
+        <activity
+            android:name=".UI.RecipeStep.StepActivity"
+            android:parentActivityName=".UI.RecipeIngredient.IngredientActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UI.RecipeIngredient.IngredientActivity" />
+        </activity>
+        <receiver android:name=".UI.Widget.RecipeWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_provider_info" />
+        </receiver>
     </application>
 
 </manifest>

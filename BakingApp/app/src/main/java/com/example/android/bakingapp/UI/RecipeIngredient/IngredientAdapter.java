@@ -6,10 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.Models.Step;
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.Utils.stepItemClickListener;
 
 import java.util.List;
 
@@ -25,22 +28,20 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     private static final String TAG = IngredientAdapter.class.getSimpleName();
 
     private Context context;
-    private OnStepClickListener listener;
+    private stepItemClickListener listener;
     private List<Step> steps;
+    private Recipe recipe;
 
-    public IngredientAdapter(OnStepClickListener listener,Context context) {
+    public IngredientAdapter(stepItemClickListener listener,Context context) {
         this.context = context;
         this.listener = listener;
     }
 
-    public void getSteps(List<Step> mSteps){
-        this.steps = mSteps;
-        Log.e(TAG, "getSteps: STEPS: "+steps);
+    public void getRecipe(Recipe mRecipe){
+        this.recipe = mRecipe;
+        this.steps = mRecipe.getSteps();
     }
 
-    public interface OnStepClickListener {
-        void OnStepClick(Step step);
-    }
 
     @Override
     public IngredientAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,8 +53,10 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onBindViewHolder(IngredientAdapterViewHolder holder, int position) {
             String stepDescription = steps.get(position).getShortDescription();
-            Log.e(TAG, "onBindViewHolder: DESCRIPTION: "+stepDescription);
             holder.tvStepDescription.setText(position+") "+stepDescription);
+            if (steps.get(position).getVideoURL().equals("")){
+                holder.playIcon.setVisibility(View.GONE);
+            }
     }
 
 
@@ -70,6 +73,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         @BindView(R.id.tv_step_description)
         TextView tvStepDescription;
 
+        @BindView(R.id.iv_step_icon)
+        ImageView playIcon;
+
         public IngredientAdapterViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
@@ -79,7 +85,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            listener.OnStepClick(steps.get(position));
+            Log.e(TAG, "HERE onClick: \nRecipe: "+recipe+"\nindex: "+position+"\n Steps: "+steps);
+            listener.onStepItemClick(steps,position,recipe);
         }
     }
 

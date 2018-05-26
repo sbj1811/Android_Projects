@@ -18,6 +18,7 @@ import com.example.android.bakingapp.Networking.ApiConnection;
 import com.example.android.bakingapp.Networking.RecipeEndpointInterface;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.UI.RecipeIngredient.IngredientActivity;
+import com.example.android.bakingapp.Utils.ItemClickListener;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,7 @@ import retrofit2.Response;
  * Created by sjani on 5/21/2018.
  */
 
-public class ListFragment extends Fragment implements ListRecipeAdapter.ListItemClickListener {
+public class ListFragment extends Fragment implements ItemClickListener {
 
     private static final String TAG = ListFragment.class.getSimpleName();
     private static final String SELECTED_RECIPE = "selected_recipe";
@@ -90,14 +91,15 @@ public class ListFragment extends Fragment implements ListRecipeAdapter.ListItem
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+
     @Override
-    public void onListItemClick(Recipe selectedRecipe) {
+    public void onItemClick(Recipe selectedRecipe) {
         Bundle bundle = new Bundle();
         ArrayList<Recipe> selectedRecipeArray = new ArrayList<>();
         selectedRecipeArray.add(selectedRecipe);
         bundle.putParcelableArrayList(SELECTED_RECIPE,selectedRecipeArray);
         Intent intent = new Intent(getActivity(), IngredientActivity.class);
         intent.putExtras(bundle);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 }

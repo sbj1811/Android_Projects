@@ -43,11 +43,11 @@ public class Step implements Parcelable
     ;
 
     protected Step(Parcel in) {
-        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.shortDescription = ((String) in.readValue((String.class.getClassLoader())));
-        this.description = ((String) in.readValue((String.class.getClassLoader())));
-        this.videoURL = ((String) in.readValue((String.class.getClassLoader())));
-        this.thumbnailURL = ((String) in.readValue((String.class.getClassLoader())));
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        shortDescription = in.readString();
+        description = in.readString();
+        videoURL = in.readString();
+        thumbnailURL = in.readString();
     }
 
     /**
@@ -115,11 +115,16 @@ public class Step implements Parcelable
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(shortDescription);
-        dest.writeValue(description);
-        dest.writeValue(videoURL);
-        dest.writeValue(thumbnailURL);
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(shortDescription);
+        dest.writeString(description);
+        dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
     }
 
     public int describeContents() {

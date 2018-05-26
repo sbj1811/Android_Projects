@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.Utils.ItemClickListener;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -27,10 +28,10 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<ListRecipeAdapter.Li
     private static final String TAG = ListRecipeAdapter.class.getSimpleName();
 
     private ArrayList<Recipe> recipeList;
-    final ListItemClickListener listener;
+    final ItemClickListener listener;
     private Context context;
 
-    public ListRecipeAdapter(ListItemClickListener mListener, Context mContext) {
+    public ListRecipeAdapter(ItemClickListener mListener, Context mContext) {
         this.listener = mListener;
         this.context = mContext;
     }
@@ -38,10 +39,6 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<ListRecipeAdapter.Li
     public void setRecipes (ArrayList<Recipe> recipe){
         this.recipeList = recipe;
         notifyDataSetChanged();
-    }
-
-    public interface ListItemClickListener {
-        void onListItemClick(Recipe recipeId);
     }
 
 
@@ -88,7 +85,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<ListRecipeAdapter.Li
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            listener.onListItemClick(recipeList.get(position));
+            listener.onItemClick(recipeList.get(position));
         }
     }
 

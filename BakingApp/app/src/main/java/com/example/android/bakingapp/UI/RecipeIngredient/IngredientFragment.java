@@ -1,5 +1,6 @@
 package com.example.android.bakingapp.UI.RecipeIngredient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.example.android.bakingapp.Models.Ingredient;
 import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.Models.Step;
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.Utils.stepItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +29,13 @@ import butterknife.ButterKnife;
  * Created by sjani on 5/22/2018.
  */
 
-public class IngredientFragment extends Fragment implements IngredientAdapter.OnStepClickListener {
+public class IngredientFragment extends Fragment {
 
     private static final String TAG = IngredientFragment.class.getSimpleName();
     private static final String SELECTED_RECIPE = "selected_recipe";
-    ArrayList<Recipe> recipes;
     private Recipe recipe;
     private List<Ingredient> ingredients;
-    private List<Step> steps;
+    private stepItemClickListener listener;
 
     @BindView(R.id.tv_ingredient)
     TextView ingredientTextView;
@@ -56,15 +57,13 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.On
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        recipe = getArguments().getParcelable(SELECTED_RECIPE);
+        ingredients = recipe.getIngredients();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        recipes = getArguments().getParcelableArrayList(SELECTED_RECIPE);
-        recipe = recipes.get(0);
-        ingredients = recipe.getIngredients();
-        steps = recipe.getSteps();
         return inflater.inflate(R.layout.ingredient_fragment,container,false);
     }
 
@@ -74,8 +73,9 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.On
         ButterKnife.bind(this,view);
         String ingredientListString = extractIngredient(ingredients);
         ingredientTextView.setText(ingredientListString);
-        IngredientAdapter adapter = new IngredientAdapter(this,getActivity());
-        adapter.getSteps(steps);
+        listener = (IngredientActivity)getActivity();
+        IngredientAdapter adapter = new IngredientAdapter(listener,getContext());
+        adapter.getRecipe(recipe);
         ingredientRecyclerView.setAdapter(adapter);
         ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -84,7 +84,6 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.On
 
         StringBuilder sb = new StringBuilder();
         sb.append("Ingredients:");
-        Log.e(TAG, "extractIngredient: ingredient: "+ingredients );
         for (int i = 0; i < ingredients.size(); i++) {
             String quantity = "";
             double q = ingredients.get(i).getQuantity();
@@ -105,7 +104,10 @@ public class IngredientFragment extends Fragment implements IngredientAdapter.On
 
 
     @Override
-    public void OnStepClick(Step step) {
-
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(SELECTED_RECIPE,recipe);
     }
+
+
 }
