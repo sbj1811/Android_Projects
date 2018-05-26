@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorWhite">
 
 
     <TextView
@@ -16,7 +16,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/overview_header"
-        android:textColor="@color/colorHeaderSecondary"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/header_small"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginTop="12dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/overview_header"
@@ -43,7 +43,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/trailer_header"
-        android:textColor="@color/colorHeaderSecondary"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/header_small"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/review_header"
-        android:textColor="@color/colorHeaderSecondary"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/header_small"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

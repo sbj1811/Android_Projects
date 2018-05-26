@@ -359,14 +359,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         TextView authorView = new TextView(getContext());
         authorView.setText("By: "+author);
-        authorView.setTextColor(getResources().getColor(R.color.colorHeaderSecondary));
+        authorView.setTextColor(getResources().getColor(R.color.colorText));
         authorView.setTypeface(null, Typeface.BOLD);
         authorView.setPadding(0,12,0,12);
         layout.addView(authorView);
 
         TextView contentView = new TextView(getContext());
         contentView.setText(reviewContent);
-        contentView.setTextColor(getResources().getColor(R.color.colorWhite));
+        contentView.setTextColor(getResources().getColor(R.color.colorText));
         contentView.setPadding(0,12,0,12);
         layout.addView(contentView);
 
