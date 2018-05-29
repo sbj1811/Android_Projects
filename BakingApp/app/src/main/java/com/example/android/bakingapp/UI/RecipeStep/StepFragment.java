@@ -52,7 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class StepFragment extends Fragment implements ExoPlayer.EventListener{
+public class StepFragment extends Fragment /*implements ExoPlayer.EventListener */{
 
     private static final String TAG = StepFragment.class.getSimpleName();
 
@@ -61,6 +61,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
     private static final String SELECTED_RECIPE = "selected_recipe";
     private static final String INDEX = "index";
     private static final String IS_NULL = "is_null";
+    private static final String PLAYER_CURRENT_POSITION = "player_current_position";
 
 
     private Step step;
@@ -71,9 +72,12 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
     private String mImageUrl;
     private int position;
     private boolean isNull;
+    private boolean exoplayerStop = false;
+    private long exoplayerCurrentPosition = 0;
+    private long exoplayerStopPosition;
     private SimpleExoPlayer mExoPlayer;
-    private MediaSessionCompat mMediaSession;
-    private PlaybackStateCompat.Builder mStateBuilder;
+//    private MediaSessionCompat mMediaSession;
+//    private PlaybackStateCompat.Builder mStateBuilder;
 
     @BindView(R.id.step_toolbar)
     Toolbar mToolbar;
@@ -88,7 +92,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
     @BindView(R.id.step_video_player)
     SimpleExoPlayerView mPlayerView;
 
-    Unbinder unbinder;
+    private Unbinder unbinder;
 
     public StepFragment() {
         // Required empty public constructor
@@ -124,7 +128,13 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.step_fragment, null);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
+
+        if(savedInstanceState != null){
+            exoplayerCurrentPosition = savedInstanceState.getLong(PLAYER_CURRENT_POSITION);
+        }
+
+
         if (!isNull) {
 
             step = steps.get(position);
@@ -144,7 +154,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
         if(mVideoUrl.equals("")){
             mPlayerView.setVisibility(View.GONE);
         } else {
-            initializeMediaSession();
+    //        initializeMediaSession();
             initializePlayer(Uri.parse(mVideoUrl));
         }
         return view;
@@ -158,60 +168,65 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
-            mExoPlayer.addListener(this);
+      //      mExoPlayer.addListener(this);
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(getContext(), "ClassicalMusicQuiz");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+            if(exoplayerCurrentPosition != 0 && !exoplayerStop){
+                mExoPlayer.seekTo(exoplayerCurrentPosition);
+            } else {
+                mExoPlayer.seekTo(exoplayerStopPosition);
+            }
+      //      mExoPlayer.setPlayWhenReady(true);
         }
     }
 
-    private void initializeMediaSession() {
-
-        // Create a MediaSessionCompat.
-        mMediaSession = new MediaSessionCompat(getContext(), TAG);
-
-        // Enable callbacks from MediaButtons and TransportControls.
-        mMediaSession.setFlags(
-                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
-                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-
-        // Do not let MediaButtons restart the player when the app is not visible.
-        mMediaSession.setMediaButtonReceiver(null);
-
-        // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
-        mStateBuilder = new PlaybackStateCompat.Builder()
-                .setActions(
-                        PlaybackStateCompat.ACTION_PLAY |
-                                PlaybackStateCompat.ACTION_PAUSE |
-                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
-                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
-
-        mMediaSession.setPlaybackState(mStateBuilder.build());
-
-
-        // MySessionCallback has methods that handle callbacks from a media controller.
-        mMediaSession.setCallback(new MediaSessionCompat.Callback() {
-            @Override
-            public void onPlay() {
-                mExoPlayer.setPlayWhenReady(true);
-            }
-
-            @Override
-            public void onPause() {
-                mExoPlayer.setPlayWhenReady(false);
-            }
-
-            @Override
-            public void onSkipToPrevious() {
-                mExoPlayer.seekTo(0);
-            }
-        });
-
-        // Start the Media Session since the activity is active.
-        mMediaSession.setActive(true);
-    }
+//    private void initializeMediaSession() {
+//
+//        // Create a MediaSessionCompat.
+//        mMediaSession = new MediaSessionCompat(getContext(), TAG);
+//
+//        // Enable callbacks from MediaButtons and TransportControls.
+//        mMediaSession.setFlags(
+//                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
+//                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+//
+//        // Do not let MediaButtons restart the player when the app is not visible.
+//        mMediaSession.setMediaButtonReceiver(null);
+//
+//        // Set an initial PlaybackState with ACTION_PLAY, so media buttons can start the player.
+//        mStateBuilder = new PlaybackStateCompat.Builder()
+//                .setActions(
+//                        PlaybackStateCompat.ACTION_PLAY |
+//                                PlaybackStateCompat.ACTION_PAUSE |
+//                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
+//                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
+//
+//        mMediaSession.setPlaybackState(mStateBuilder.build());
+//
+//
+//        // MySessionCallback has methods that handle callbacks from a media controller.
+//        mMediaSession.setCallback(new MediaSessionCompat.Callback() {
+//            @Override
+//            public void onPlay() {
+//                mExoPlayer.setPlayWhenReady(true);
+//            }
+//
+//            @Override
+//            public void onPause() {
+//                mExoPlayer.setPlayWhenReady(false);
+//            }
+//
+//            @Override
+//            public void onSkipToPrevious() {
+//                mExoPlayer.seekTo(0);
+//            }
+//        });
+//
+//        // Start the Media Session since the activity is active.
+//        mMediaSession.setActive(true);
+//    }
 
 
     private void releasePlayer() {
@@ -220,9 +235,9 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
             mExoPlayer.release();
             mExoPlayer = null;
         }
-        if (mMediaSession != null) {
-            mMediaSession.setActive(false);
-        }
+//        if (mMediaSession != null) {
+//            mMediaSession.setActive(false);
+//        }
     }
 
 
@@ -232,8 +247,16 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        initializePlayer(Uri.parse(mVideoUrl));
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
+        exoplayerStopPosition = mExoPlayer.getCurrentPosition();
+        exoplayerStop = true;
         releasePlayer();
     }
 
@@ -241,6 +264,7 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
     public void onDestroy() {
         super.onDestroy();
         releasePlayer();
+        unbinder.unbind();
     }
 
     @Override
@@ -254,42 +278,43 @@ public class StepFragment extends Fragment implements ExoPlayer.EventListener{
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(SELECTED_RECIPE,recipe);
+        outState.putLong(PLAYER_CURRENT_POSITION,mExoPlayer.getCurrentPosition());
     }
 
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
-
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
-            mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
-                    mExoPlayer.getCurrentPosition(), 1f);
-        } else if((playbackState == ExoPlayer.STATE_READY)){
-            mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
-                    mExoPlayer.getCurrentPosition(), 1f);
-        }
-        mMediaSession.setPlaybackState(mStateBuilder.build());
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
-
-    @Override
-    public void onPositionDiscontinuity() {
-
-    }
+//    @Override
+//    public void onTimelineChanged(Timeline timeline, Object manifest) {
+//
+//    }
+//
+//    @Override
+//    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+//
+//    }
+//
+//    @Override
+//    public void onLoadingChanged(boolean isLoading) {
+//
+//    }
+//
+//    @Override
+//    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+//        if((playbackState == ExoPlayer.STATE_READY) && playWhenReady){
+//            mStateBuilder.setState(PlaybackStateCompat.STATE_PLAYING,
+//                    mExoPlayer.getCurrentPosition(), 1f);
+//        } else if((playbackState == ExoPlayer.STATE_READY)){
+//            mStateBuilder.setState(PlaybackStateCompat.STATE_PAUSED,
+//                    mExoPlayer.getCurrentPosition(), 1f);
+//        }
+//        mMediaSession.setPlaybackState(mStateBuilder.build());
+//    }
+//
+//    @Override
+//    public void onPlayerError(ExoPlaybackException error) {
+//
+//    }
+//
+//    @Override
+//    public void onPositionDiscontinuity() {
+//
+//    }
 }

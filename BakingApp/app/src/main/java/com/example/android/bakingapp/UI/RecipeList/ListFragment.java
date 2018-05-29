@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +37,8 @@ public class ListFragment extends Fragment implements ItemClickListener {
 
     private static final String TAG = ListFragment.class.getSimpleName();
     private static final String SELECTED_RECIPE = "selected_recipe";
+
+    private Unbinder unbinder;
 
 
     @BindView(R.id.rv_main)
@@ -71,7 +74,7 @@ public class ListFragment extends Fragment implements ItemClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
         final ListRecipeAdapter adapter = new ListRecipeAdapter(this,getActivity());
         RecipeEndpointInterface recipeEndpointInterface =  ApiConnection.getApi();
         Call<ArrayList<Recipe>> recipes = recipeEndpointInterface.loadRecipe();
@@ -89,6 +92,12 @@ public class ListFragment extends Fragment implements ItemClickListener {
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
 

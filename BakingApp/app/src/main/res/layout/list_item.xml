@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/standard_margin"
             android:orientation="horizontal">
 
             <ImageView
@@ -27,7 +27,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
+                android:paddingLeft="@dimen/standard_margin"
                 android:orientation="vertical">
 
                 <TextView
@@ -42,7 +42,7 @@
                     android:id="@+id/recipe_serving"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/standard_margin"
                     tools:text="Servings: 5"/>
 
             </LinearLayout>

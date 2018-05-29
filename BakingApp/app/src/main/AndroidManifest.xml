@@ -43,12 +43,20 @@
         <receiver android:name=".UI.Widget.RecipeWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.android.bakingapp.UPDATE_WIDGET"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/recipe_widget_provider_info" />
         </receiver>
+        <provider
+            android:authorities="com.example.android.bakingapp.Data.RecipeContentProvider"
+            android:name=".Data.generated.RecipeContentProvider"
+            android:exported="false"/>
+        <service android:name=".UI.Widget.RecipeWidgetService"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>

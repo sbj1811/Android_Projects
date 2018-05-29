@@ -9,12 +9,14 @@ import android.util.Log;
 import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.UI.RecipeIngredient.IngredientActivity;
+import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
+    public static final String UPDATE_WIDGET = "android.appwidget.action.APPWIDGET_UPDATE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,13 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                        .build()
+        );
+        final Intent update = new Intent(UPDATE_WIDGET);
+        this.sendBroadcast(update);
 
     }
 

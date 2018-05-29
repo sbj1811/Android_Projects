@@ -1,20 +1,35 @@
 package com.example.android.bakingapp.UI.RecipeIngredient;
 
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import com.example.android.bakingapp.Data.IngredientsColumns;
+import com.example.android.bakingapp.Data.RecipeColumns;
+import com.example.android.bakingapp.Data.RecipeContentProvider;
+import com.example.android.bakingapp.Data.RecipeDb;
 import com.example.android.bakingapp.Models.Ingredient;
 import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.Models.Step;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.UI.RecipeStep.StepActivity;
 import com.example.android.bakingapp.UI.RecipeStep.StepFragment;
+import com.example.android.bakingapp.Utils.Utility;
 import com.example.android.bakingapp.Utils.stepItemClickListener;
+import com.google.android.exoplayer2.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +43,16 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
     private static final String SELECTED_RECIPE = "selected_recipe";
     private static final String SELECTED_STEP = "selected_step";
     private static final String INDEX = "index";
+    public static final String UPDATE_WIDGET = "android.appwidget.action.APPWIDGET_UPDATE";
 
     boolean mDualPane;
 
     @BindView(R.id.ingredient_toolbar)
     Toolbar mToolbar;
-
     @BindView(R.id.ingredient_toolbarText)
     TextView mToolbarText;
+    @BindView(R.id.fav_button)
+    ToggleButton favButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +62,7 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -60,7 +78,59 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
         } else {
 
         }
+
+        final Intent update = new Intent(UPDATE_WIDGET);
+
+        if(Utility.checkRecipeExist(this,recipe.getId())){
+            favButton.setChecked(true);
+            IngredientActivity.this.sendBroadcast(update);
+        } else {
+            favButton.setChecked(false);
+        }
+
+
+        favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(favButton.isChecked()){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            ContentValues values = new ContentValues();
+                            values.put(RecipeColumns.RECIPE_NAME,recipe.getName());
+                            values.put(RecipeColumns.RECIPE_ID,recipe.getId());
+                            values.put(RecipeColumns.SERVING_SIZE,recipe.getServings());
+                            Utility.setIngredientName(IngredientActivity.this,recipe.getName());
+                            ContentValues[] ingredientContent = Utility.makeIngredientsList(recipe.getIngredients(),recipe);
+                            getContentResolver().delete(RecipeContentProvider.RecipeList.CONTENT_URI,null,null);
+                            getContentResolver().delete(RecipeContentProvider.RecipeIngredients.CONTENT_URI,null,null);
+                            getContentResolver().insert(RecipeContentProvider.RecipeList.CONTENT_URI, values);
+                            getContentResolver().bulkInsert(RecipeContentProvider.RecipeIngredients.CONTENT_URI,ingredientContent);
+                            IngredientActivity.this.sendBroadcast(update);
+
+                //            favButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite));
+                        }
+                    }).start();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utility.setIngredientName(IngredientActivity.this,"");
+                            getContentResolver().delete(RecipeContentProvider.RecipeList.CONTENT_URI,null,null);
+                            getContentResolver().delete(RecipeContentProvider.RecipeIngredients.CONTENT_URI,null,null);
+                            IngredientActivity.this.sendBroadcast(update);
+                 //           favButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border));
+                        }
+                    }).start();
+                }
+
+            }
+        });
     }
+
+
 
 
     @Override

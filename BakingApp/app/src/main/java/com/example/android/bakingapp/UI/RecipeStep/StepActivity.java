@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.Models.Step;
@@ -32,8 +34,12 @@ public class StepActivity extends AppCompatActivity {
     private static final String TAG_RETAINED_FRAGMENT = "RetainedFragment";
 
 
-    @BindView(R.id.main_coordinator_layout)
-    CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.step_number)
+    TextView mStepNum;
+    @BindView(R.id.prev_step)
+    ImageButton mPrevButton;
+    @BindView(R.id.next_step)
+    ImageButton mNextButton;
 
 
     private ArrayList<Step> steps;
@@ -62,6 +68,31 @@ public class StepActivity extends AppCompatActivity {
         }
 
         stepFragment = (StepFragment) getSupportFragmentManager().findFragmentByTag(TAG_RETAINED_FRAGMENT);
+        updateStepNumberText(selectecStepIndex);
+
+        if (mPrevButton != null) {
+            mPrevButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectecStepIndex--;
+                    stepFragment = StepFragment.newInstance(steps,selectecStepIndex);
+                    updateStepNumberText(selectecStepIndex);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.step_container,stepFragment,TAG_RETAINED_FRAGMENT).commit();
+                }
+            });
+        }
+
+        if (mNextButton != null) {
+            mNextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectecStepIndex++;
+                    stepFragment = StepFragment.newInstance(steps,selectecStepIndex);
+                    updateStepNumberText(selectecStepIndex);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.step_container,stepFragment,TAG_RETAINED_FRAGMENT).commit();
+                }
+            });
+        }
 
         if(stepFragment == null) {
             stepFragment = StepFragment.newInstance(steps,selectecStepIndex);
@@ -72,6 +103,25 @@ public class StepActivity extends AppCompatActivity {
 
 
     }
+
+    private void updateStepNumberText(int stepPosition){
+
+        if(mStepNum != null) {
+            mStepNum.setText(Integer.toString(stepPosition));
+
+            // Check position and hide arrow if at 0 or last position,
+            // preventing going negative and higher than list size
+            if (stepPosition == 0) {
+                mPrevButton.setVisibility(View.GONE);
+            } else if (stepPosition == steps.size() - 1) {
+                mNextButton.setVisibility(View.GONE);
+            } else {
+                mPrevButton.setVisibility(View.VISIBLE);
+                mNextButton.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
 
 
     @Override

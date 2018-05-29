@@ -16,6 +16,7 @@ import com.example.android.bakingapp.Models.Ingredient;
 import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.Models.Step;
 import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.Utils.Utility;
 import com.example.android.bakingapp.Utils.stepItemClickListener;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by sjani on 5/22/2018.
@@ -36,6 +38,7 @@ public class IngredientFragment extends Fragment {
     private Recipe recipe;
     private List<Ingredient> ingredients;
     private stepItemClickListener listener;
+    private Unbinder unbinder;
 
     @BindView(R.id.tv_ingredient)
     TextView ingredientTextView;
@@ -70,7 +73,7 @@ public class IngredientFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
         String ingredientListString = extractIngredient(ingredients);
         ingredientTextView.setText(ingredientListString);
         listener = (IngredientActivity)getActivity();
@@ -89,10 +92,7 @@ public class IngredientFragment extends Fragment {
             double q = ingredients.get(i).getQuantity();
             String measure = ingredients.get(i).getMeasure();
             String name = ingredients.get(i).getIngredient();
-            if (q == (long)q){
-                quantity = String.format(Locale.US,"%d",(long)q);
-            } else
-                quantity = String.format(Locale.US,"%s",q);
+            quantity = Utility.formatQuantity(q);
             sb.append("\n");
             sb.append((i+1)+") "+name+" ( "+quantity+" "+measure+" )");
 
@@ -109,5 +109,10 @@ public class IngredientFragment extends Fragment {
         outState.putParcelable(SELECTED_RECIPE,recipe);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 
 }
