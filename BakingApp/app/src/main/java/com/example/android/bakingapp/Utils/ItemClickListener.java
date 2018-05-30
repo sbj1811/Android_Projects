@@ -7,5 +7,5 @@ import com.example.android.bakingapp.Models.Recipe;
  */
 
 public interface ItemClickListener {
-    void onItemClick(Recipe selectedRecipe);
+    void onItemClick(Recipe selectedRecipe,int position);
 }

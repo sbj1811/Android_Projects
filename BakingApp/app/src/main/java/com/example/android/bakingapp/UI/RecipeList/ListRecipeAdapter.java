@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.example.android.bakingapp.Models.Recipe;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.Utils.ItemClickListener;
+import com.example.android.bakingapp.Utils.Utility;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -55,6 +57,11 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<ListRecipeAdapter.Li
         holder.recipeTitle.setText(title);
         int serving = recipeList.get(position).getServings();
         holder.recipeServing.setText(String.format(Locale.US, holder.servingsText, serving));
+        if(Utility.checkRecipeExist(context,recipeList.get(position).getId())){
+            holder.favFrameLayout.setVisibility(View.VISIBLE);
+        } else {
+            holder.favFrameLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -73,8 +80,13 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<ListRecipeAdapter.Li
         @BindView(R.id.recipe_serving)
         TextView recipeServing;
 
+        @BindView(R.id.list_item_framelayout)
+        FrameLayout favFrameLayout;
+
         @BindString(R.string.servings_text)
         String servingsText;
+
+
 
         public ListAdapterViewHolder(View itemView) {
             super(itemView);
@@ -85,7 +97,7 @@ public class ListRecipeAdapter extends RecyclerView.Adapter<ListRecipeAdapter.Li
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            listener.onItemClick(recipeList.get(position));
+            listener.onItemClick(recipeList.get(position),position);
         }
     }
 

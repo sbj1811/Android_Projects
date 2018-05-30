@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.example.android.bakingapp.Networking.RecipeEndpointInterface;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.UI.RecipeIngredient.IngredientActivity;
 import com.example.android.bakingapp.Utils.ItemClickListener;
+import com.example.android.bakingapp.Utils.RecipeIdlingResource;
 
 import java.util.ArrayList;
 
@@ -37,7 +39,7 @@ public class ListFragment extends Fragment implements ItemClickListener {
 
     private static final String TAG = ListFragment.class.getSimpleName();
     private static final String SELECTED_RECIPE = "selected_recipe";
-
+    private static final String POSITION = "position";
     private Unbinder unbinder;
 
 
@@ -46,6 +48,7 @@ public class ListFragment extends Fragment implements ItemClickListener {
     @BindView(R.id.pb_loading_indicator)
     ProgressBar progressBar;
 
+    RecipeIdlingResource idlingResource;
 
 
     public ListFragment() {
@@ -68,6 +71,7 @@ public class ListFragment extends Fragment implements ItemClickListener {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        idlingResource = (RecipeIdlingResource) ((MainActivity)getActivity()).getIdlingResource();
         return inflater.inflate(R.layout.list_fragment,container,false);
     }
 
@@ -78,11 +82,19 @@ public class ListFragment extends Fragment implements ItemClickListener {
         final ListRecipeAdapter adapter = new ListRecipeAdapter(this,getActivity());
         RecipeEndpointInterface recipeEndpointInterface =  ApiConnection.getApi();
         Call<ArrayList<Recipe>> recipes = recipeEndpointInterface.loadRecipe();
+
+        if (idlingResource != null) {
+            idlingResource.setIdleState(false);
+        }
+
         recipes.enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
                 ArrayList<Recipe> recipes = response.body();
                 adapter.setRecipes(recipes);
+                if (idlingResource != null) {
+                    idlingResource.setIdleState(true);
+                }
             }
 
             @Override
@@ -91,7 +103,7 @@ public class ListFragment extends Fragment implements ItemClickListener {
             }
         });
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
     }
 
     @Override
@@ -102,11 +114,12 @@ public class ListFragment extends Fragment implements ItemClickListener {
 
 
     @Override
-    public void onItemClick(Recipe selectedRecipe) {
+    public void onItemClick(Recipe selectedRecipe, int position) {
         Bundle bundle = new Bundle();
         ArrayList<Recipe> selectedRecipeArray = new ArrayList<>();
         selectedRecipeArray.add(selectedRecipe);
         bundle.putParcelableArrayList(SELECTED_RECIPE,selectedRecipeArray);
+        bundle.putInt(POSITION,position);
         Intent intent = new Intent(getActivity(), IngredientActivity.class);
         intent.putExtras(bundle);
         startActivityForResult(intent,1);

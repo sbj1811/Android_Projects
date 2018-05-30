@@ -28,43 +28,31 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = RecipeWidgetProvider.class.getSimpleName();
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-        Log.e(TAG, "updateAppWidget: HERE");
+    public static void updateAppWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds,String recipeName, String ingredients){
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId,recipeName,ingredients);
+        }
+    }
+
+    public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+                                int appWidgetId,String recipeName, String ingredients) {
         CharSequence widgetText = context.getString(R.string.app_name);
 
-        String recipe = Utility.getIngredientName(context);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
-        Log.d("RecipeWidgetProvider", "updateAppWidget: RECIPE: "+recipe);
-        if(recipe.equals("")) {
-            views.setTextViewText(R.id.widget_title, widgetText);
-        } else {
-            views.setTextViewText(R.id.widget_title, recipe);
-        }
 
+        Log.d(TAG, "updateAppWidget: RECIPE: "+recipeName+"\n"+ingredients);
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
+        // Construct the RemoteViews object
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
+        if(recipeName.equals("")) {
+            views.setTextViewText(R.id.widget_title, widgetText);
+            views.setTextViewText(R.id.widget_ingredient, "No Ingredients to display");
+        } else {
+            views.setTextViewText(R.id.widget_title, recipeName);
+            views.setTextViewText(R.id.widget_ingredient, ingredients);
+        }
         views.setOnClickPendingIntent(R.id.widget_appBar,pendingIntent);
 
-        setRemoteAdapter(context, views);
-
-        boolean enableDetails = context.getResources().getBoolean(R.bool.widget_details);
-        Intent clickIntent;
-        if(enableDetails){
-            clickIntent = new Intent(context, IngredientActivity.class);
-        } else {
-            clickIntent = new Intent(context, MainActivity.class);
-        }
-        PendingIntent clickPendingIntent = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            clickPendingIntent = TaskStackBuilder.create(context)
-                    .addNextIntentWithParentStack(clickIntent)
-                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-
-        views.setPendingIntentTemplate(R.id.widget_list, clickPendingIntent);
-        views.setEmptyView(R.id.widget_list,R.id.widget_empty_view);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -73,22 +61,14 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        Log.e(TAG, "onUpdate: HERE: "+appWidgetIds.length);
-        for (int appWidgetId : appWidgetIds) {
-            Log.e(TAG, "onUpdate: "+appWidgetId);
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+        RecipeWidgetService.startActionUpdateWidgets(context);
+
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
-   //     Log.e(TAG, "onReceive: HERE: ACTION");
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appwidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, getClass()));
-        Log.e(TAG, "onReceive: LENGTH appwidgetIds: "+appwidgetIds.length);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appwidgetIds,R.id.widget_list);
-        onUpdate(context,appWidgetManager,appwidgetIds);
+    public void onEnabled(Context context) {
+        super.onEnabled(context);
+        RecipeWidgetService.startActionUpdateWidgets(context);
     }
 
     @Override
@@ -97,21 +77,6 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         context.startService(new Intent(context,RecipeWidgetService.class));
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private static void setRemoteAdapter(Context context, @NonNull final RemoteViews views){
-        Log.e(TAG, "setRemoteAdapter: HERE");
-        views.setRemoteAdapter(R.id.widget_list,
-                new Intent(context, RecipeWidgetService.class));
-    }
-
-    public static void setWidgetText(Context context, String name){
-        Log.e(TAG, "setWidgetText: HERE");
-
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
-
-        views.setTextViewText(R.id.widget_title,name);
-
-    }
 
 }
 

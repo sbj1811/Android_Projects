@@ -4,6 +4,7 @@ package com.example.android.bakingapp.UI.RecipeIngredient;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -27,6 +28,7 @@ import com.example.android.bakingapp.Models.Step;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.UI.RecipeStep.StepActivity;
 import com.example.android.bakingapp.UI.RecipeStep.StepFragment;
+import com.example.android.bakingapp.UI.Widget.RecipeWidgetService;
 import com.example.android.bakingapp.Utils.Utility;
 import com.example.android.bakingapp.Utils.stepItemClickListener;
 import com.google.android.exoplayer2.C;
@@ -43,7 +45,8 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
     private static final String SELECTED_RECIPE = "selected_recipe";
     private static final String SELECTED_STEP = "selected_step";
     private static final String INDEX = "index";
-    public static final String UPDATE_WIDGET = "android.appwidget.action.APPWIDGET_UPDATE";
+    private static final String POSITION = "position";
+    public static final String UPDATE_WIDGET = "update_widget";
 
     boolean mDualPane;
 
@@ -68,7 +71,9 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
 
         Bundle bundle = this.getIntent().getExtras();
         final ArrayList<Recipe> recipes = bundle.getParcelableArrayList(SELECTED_RECIPE);
+        final int position = bundle.getInt(POSITION);
         final Recipe recipe = recipes.get(0);
+        final ArrayList<Step> steps = (ArrayList<Step>) recipe.getSteps();
         mToolbarText.setText(recipe.getName());
         if (savedInstanceState == null) {
             IngredientFragment ingredientFragment = IngredientFragment.newInstance(recipe);
@@ -108,7 +113,7 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
                             getContentResolver().delete(RecipeContentProvider.RecipeIngredients.CONTENT_URI,null,null);
                             getContentResolver().insert(RecipeContentProvider.RecipeList.CONTENT_URI, values);
                             getContentResolver().bulkInsert(RecipeContentProvider.RecipeIngredients.CONTENT_URI,ingredientContent);
-                            IngredientActivity.this.sendBroadcast(update);
+                            RecipeWidgetService.startActionUpdateWidgets(IngredientActivity.this);
 
                 //            favButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite));
                         }
@@ -120,7 +125,7 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
                             Utility.setIngredientName(IngredientActivity.this,"");
                             getContentResolver().delete(RecipeContentProvider.RecipeList.CONTENT_URI,null,null);
                             getContentResolver().delete(RecipeContentProvider.RecipeIngredients.CONTENT_URI,null,null);
-                            IngredientActivity.this.sendBroadcast(update);
+                            RecipeWidgetService.startActionUpdateWidgets(IngredientActivity.this);
                  //           favButton.setBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_favorite_border));
                         }
                     }).start();
@@ -128,6 +133,18 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
 
             }
         });
+
+        if(findViewById(R.id.ingredient_step_container) != null){
+            mDualPane = true;
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.ingredient_step_container, StepFragment.newInstance((ArrayList<Step>) steps,position))
+                    .commit();
+        } else {
+            mDualPane = false;
+        }
+
+
     }
 
 
@@ -143,8 +160,9 @@ public class IngredientActivity extends AppCompatActivity implements stepItemCli
     @Override
     public void onStepItemClick(List<Step> steps, int index, Recipe recipe) {
         if (mDualPane){
+
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.ingredient_container, StepFragment.newInstance((ArrayList<Step>) steps,index))
+                    .replace(R.id.ingredient_step_container, StepFragment.newInstance((ArrayList<Step>) steps,index))
                     .commit();
 
         } else {

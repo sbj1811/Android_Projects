@@ -28,19 +28,12 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ListView
-            android:id="@+id/widget_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:dividerHeight="0dp"
-            tools:listitem=""/>
-
         <TextView
-            android:id="@+id/widget_empty_view"
+            android:id="@+id/widget_ingredient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="No Recipe marked as favorite"/>
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            tools:text="Ingredients list:\nItem1\nItem2"/>
 
     </FrameLayout>
 </LinearLayout>

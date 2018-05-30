@@ -94,7 +94,7 @@ public class IngredientFragment extends Fragment {
             String name = ingredients.get(i).getIngredient();
             quantity = Utility.formatQuantity(q);
             sb.append("\n");
-            sb.append((i+1)+") "+name+" ( "+quantity+" "+measure+" )");
+            sb.append((i+1)+") "+name+" ( "+quantity+" "+measure.toLowerCase()+" )");
 
         }
 
