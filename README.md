@@ -42,8 +42,8 @@ This app fetches movie data using [themoviedb.org](https://www.themoviedb.org/) 
 * Offline Viewing mode
 * Automatic Daily update.
 * Libraries:
-	  * [Facebook Stetho](http://facebook.github.io/stetho/)
-	  * [Picasso](http://square.github.io/picasso/)
+    * [Facebook Stetho](http://facebook.github.io/stetho/)
+    * [Picasso](http://square.github.io/picasso/)
     * [Retrofit 2](http://square.github.io/retrofit/)
     * [Butter Knife](jakewharton.github.io/butterknife/)
 

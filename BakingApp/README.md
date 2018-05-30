@@ -14,8 +14,8 @@ This app shows recipes.
 * Supports UI for Mutiple Phone and Tablet sizes
 * Uses Expresso Unit tests for UI and Intents
 * Libraries:
-	  * [Facebook Stetho](http://facebook.github.io/stetho/)
-	  * [Picasso](http://square.github.io/picasso/)
+    * [Facebook Stetho](http://facebook.github.io/stetho/)
+    * [Picasso](http://square.github.io/picasso/)
     * [Retrofit](http://square.github.io/retrofit/)
     * [Butter Knife](jakewharton.github.io/butterknife/)
     * [ExoPlayer](https://github.com/google/ExoPlayer)
