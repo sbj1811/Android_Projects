@@ -3,6 +3,7 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.android.jokedisplay.JokeDisplayActivity;
 import com.example.android.jokeprovider.JokeProvider;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
@@ -30,14 +32,18 @@ public class MainActivity extends AppCompatActivity {
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-1510923228147176~7401345082");
 
-        AdView mAdView = (AdView) findViewById(R.id.adView);
+
         // Create an ad request. Check logcat output for the hashed device ID to
         // get test ads on a physical device. e.g.
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
+        getAdRequest();
+    }
+
+    @NonNull
+    public void getAdRequest() {
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
-        mAdView.loadAd(adRequest);
         mInterstitialAd.loadAd(adRequest);
     }
 
@@ -65,13 +71,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(View view) {
+        progressBar.setVisibility(View.VISIBLE);
         if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    getAdRequest();
+                    progressBar.setVisibility(View.INVISIBLE);
+                    new EndpointsAsyncTask(MainActivity.this).execute();
+                }
+            });
+
             mInterstitialAd.show();
         }
         else {
-            progressBar.setVisibility(View.VISIBLE);
-            new EndpointsAsyncTask(this).execute();
             progressBar.setVisibility(View.INVISIBLE);
+            new EndpointsAsyncTask(MainActivity.this).execute();
         }
     }
 
