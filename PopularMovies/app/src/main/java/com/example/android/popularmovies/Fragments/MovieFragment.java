@@ -1,7 +1,9 @@
 package com.example.android.popularmovies.Fragments;
 
+import android.app.ActivityOptions;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -171,7 +174,14 @@ public class MovieFragment extends Fragment implements android.support.v4.app.Lo
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             intent.putExtra("URI", uri);
             intent.putExtra("MOVIE_ID", clickedMovieId);
-            startActivity(intent);
+        //    View sharedView = detailsView.findViewById(R.id.iv_grid);
+            ImageView ivProfile = (ImageView) getActivity().findViewById(R.id.iv_grid);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),ivProfile,ivProfile.getTransitionName());
+                startActivity(intent, options.toBundle());
+            } else {
+                startActivity(intent);
+            }
         }
     }
 }

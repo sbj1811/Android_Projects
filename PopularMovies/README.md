@@ -1,5 +1,4 @@
 # Popular Movies App
-===================================
 
 This app fetches movie data using [themoviedb.org](https://www.themoviedb.org/) API. 
 

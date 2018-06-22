@@ -30,4 +30,5 @@
     <string name="settings_sort_fav_header">Favorite</string>
     <string name="settings_sort_fav" translatable="false">favorite</string>
     <string name="background_image">Image</string>
+    <string name="transition_image">transition_image</string>
 </resources>

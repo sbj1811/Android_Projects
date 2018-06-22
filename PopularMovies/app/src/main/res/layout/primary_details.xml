@@ -11,6 +11,7 @@
 
     <ImageView
         android:id="@+id/iv_backdrop"
+        android:transitionName="@string/transition_image"
         android:layout_width="match_parent"
         android:layout_height="171dp"
         android:contentDescription="@string/background_image"
@@ -26,6 +27,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="120dp"
+        android:elevation="8dp"
         android:contentDescription="@string/background_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_backdrop"
@@ -39,7 +41,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="28dp"
         android:scaleType="center"
-        app:borderWidth="0dp"
+        android:elevation="6dp"
         app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/iv_poster"

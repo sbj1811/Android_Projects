@@ -2,7 +2,6 @@
 #### By: Shaunak Jani
 
 # Baking App
-===================================
 
 This app shows recipes. 
 
@@ -24,8 +23,8 @@ This app shows recipes.
     * [ExoPlayer](https://github.com/google/ExoPlayer)
     * [Schematic](https://github.com/SimonVT/schematic)
 
-# Popular Movies App
 ===================================
+# Popular Movies App
 
 This app fetches movie data using [themoviedb.org](https://www.themoviedb.org/) API. 
 
@@ -47,8 +46,8 @@ This app fetches movie data using [themoviedb.org](https://www.themoviedb.org/) 
     * [Retrofit 2](http://square.github.io/retrofit/)
     * [Butter Knife](jakewharton.github.io/butterknife/)
 
-## Miwok Translator App
 ===================================
+## Miwok Translator App
 
 This app uses Fragments, ViewPager and TabView to display Miwok to English translation. It also implemets MediaPlayer and AudioManager to play Miwok audio pronunciation. 
 
@@ -56,8 +55,8 @@ This app uses Fragments, ViewPager and TabView to display Miwok to English trans
 
 [Miwok-Translator-app]: ./Miwok_translator/media/app_screenshot.png
 
-## San Francisco Tour Guide
 ===================================
+## San Francisco Tour Guide
 
 This app uses Fragments, ViewPager and TabView to display various categoirs of attactions in SF. For every attraction, when clicked on it, it provides details like website, phone umbers and addresss. Uses web, phone and location intents to interact with other apps.
 
@@ -65,9 +64,8 @@ This app uses Fragments, ViewPager and TabView to display various categoirs of a
 
 [SF-TourGuide-app]: ./SanFranciscoTourGuide/media/app_screenshot.png
 
-
-## Earthquake Report App
 ===================================
+## Earthquake Report App
 
 This app displays a list of recent earthquakes in the world
 from the U.S. Geological Survey (USGS) organization. User can 
@@ -80,8 +78,8 @@ https://earthquake.usgs.gov/fdsnws/event/1/
 
 [Earthquake-Report-App]: ./EarthquakeReport/media/app_screenshot.png
 
-## Book Listing App
 ===================================
+## Book Listing App
 
 This app searches and displays a list of books on the Google Play Book Store.
 
@@ -92,8 +90,8 @@ https://developers.google.com/books/docs/v1/getting_started#intro
 
 [Book-Listing-App]: ./BookListing/media/app_screenshot.png
 
-## News App
 ===================================
+## News App
 
 This app searches and displays list of news articles based on search query.
 
@@ -104,8 +102,8 @@ http://open-platform.theguardian.com/
 
 [News-App]: ./NewsApp/media/app_screenshot.png
 
-## Inventory App
 ===================================
+## Inventory App
 
 This app tracks the inventory of a retail store using SQLite database.
 
@@ -113,9 +111,8 @@ This app tracks the inventory of a retail store using SQLite database.
 
 [Inventory-App]: ./InventoryApp/media/app_screenshot.png
 
-
-## License:
 ===================================
+## License:
 ```
   Copyright 2018, Shaunak Jani
 

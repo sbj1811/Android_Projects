@@ -2,10 +2,15 @@ package com.example.android.popularmovies.Activities;
 
 
 
+import android.app.ActivityOptions;
 import android.app.Fragment;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
+import android.support.transition.Slide;
+import android.support.transition.Transition;
+import android.support.transition.TransitionInflater;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setupWindowAnimations();
         ButterKnife.bind(this);
         FragmentSelectAdapter selectAdapter = new FragmentSelectAdapter(getSupportFragmentManager(),this);
         mViewPager.setAdapter(selectAdapter);
@@ -59,4 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private void setupWindowAnimations() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            android.transition.Transition slide = new android.transition.Slide();
+            slide.setDuration(300);
+            getWindow().setEnterTransition(slide);
+        }
+    }
+
 }

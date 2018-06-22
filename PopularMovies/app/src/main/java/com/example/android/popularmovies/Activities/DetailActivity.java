@@ -57,4 +57,10 @@ public class DetailActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.nothing, R.anim.slide_out);
+    }
 }

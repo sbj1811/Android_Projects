@@ -1,5 +1,4 @@
 # Baking App
-===================================
 
 This app shows recipes. 
 
