@@ -1,5 +1,6 @@
 package com.example.xyzreader.ui;
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.LoaderManager;
 import android.content.Intent;
 import android.support.v4.content.Loader;
@@ -32,6 +33,8 @@ import com.facebook.imagepipeline.core.ImagePipeline;
 import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
 import com.facebook.imagepipeline.image.CloseableImage;
 import com.facebook.imagepipeline.request.ImageRequest;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 /**
  * A fragment representing a single Article detail screen. This fragment is
@@ -136,8 +139,41 @@ public class ArticleDetailFragment extends android.support.v4.app.Fragment imple
                 mToolbar.setTitle(title);
             }
 
-            ImageLoadingUtils.load(mPhotoView, photo);
-            processImageWithPaletteApi(ImageLoadingUtils.getCurrentImageRequest());
+            //ImageLoadingUtils.load(mPhotoView, photo);
+            Picasso.with(mPhotoView.getContext())
+                    .load(photo)
+                    .fit()
+                    .into(mPhotoView);
+  //          processImageWithPaletteApi(ImageLoadingUtils.getCurrentImageRequest());
+            Picasso.with(mPhotoView.getContext())
+                    .load(photo)
+                    .into(new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            Palette.from(bitmap).maximumColorCount(24).generate(new Palette.PaletteAsyncListener() {
+                                @Override public void onGenerated(Palette palette) {
+
+                                    int defaultColor = 0x000000;
+                                    int lightMutedColor = palette.getLightMutedColor(defaultColor);
+                                    int darkMutedColor = palette.getDarkMutedColor(defaultColor);
+                                    if (collapsingToolbarLayout != null) {
+                                        collapsingToolbarLayout.setContentScrimColor(lightMutedColor);
+                                        collapsingToolbarLayout.setStatusBarScrimColor(darkMutedColor);
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    });
 
             titleView.setText(title);
             dateView.setText(date);
@@ -176,34 +212,6 @@ public class ArticleDetailFragment extends android.support.v4.app.Fragment imple
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-    }
-
-    private void processImageWithPaletteApi(ImageRequest request) {
-
-        ImagePipeline imagePipeline = Fresco.getImagePipeline();
-
-        DataSource<CloseableReference<CloseableImage>> dataSource = imagePipeline.fetchDecodedImage(request, this);
-        dataSource.subscribe(new BaseBitmapDataSubscriber() {
-            @Override
-            protected void onFailureImpl(DataSource<CloseableReference<CloseableImage>> dataSource) {
-
-            }
-
-            @Override protected void onNewResultImpl(@Nullable Bitmap bitmap) {
-                Palette.from(bitmap).maximumColorCount(24).generate(new Palette.PaletteAsyncListener() {
-                    @Override public void onGenerated(Palette palette) {
-
-                        int defaultColor = 0x000000;
-                        int lightMutedColor = palette.getLightMutedColor(defaultColor);
-                        int darkMutedColor = palette.getDarkMutedColor(defaultColor);
-                        if (collapsingToolbarLayout != null) {
-                            collapsingToolbarLayout.setContentScrimColor(lightMutedColor);
-                            collapsingToolbarLayout.setStatusBarScrimColor(darkMutedColor);
-                        }
-                    }
-                });
-            }
-        }, CallerThreadExecutor.getInstance());
     }
 
 }

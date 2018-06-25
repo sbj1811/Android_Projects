@@ -1,6 +1,6 @@
 # XYZ Reader App
 
-Redesigned the existing news reading app using [Material Desing Guidelines](https://material.google.com/). This includes consistent and meaningful use of Material Design UI components, fonts, color, motion and surfaces.
+Redesigned the existing news reading app using [Material Design Guidelines](https://material.google.com/). This includes consistent and meaningful use of Material Design UI components, fonts, color, motion and surfaces.
 
 ![XYZ Reader][XYZ-Reader]
 
@@ -20,6 +20,7 @@ Redesigned the existing news reading app using [Material Desing Guidelines](http
 * Libraries:
     * [Facebook Fresco](http://frescolib.org/)
     * [Okhttp](http://square.github.io/okhttp/)
+    * [Picasso](http://square.github.io/picasso/)
 
 
 

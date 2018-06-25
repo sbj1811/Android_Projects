@@ -26,6 +26,7 @@ import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
 import com.example.xyzreader.data.ItemsContract;
 import com.example.xyzreader.data.UpdaterService;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -156,17 +157,6 @@ public class ArticleListActivity extends AppCompatActivity implements
             return vh;
         }
 
-        private Date parsePublishedDate() {
-            try {
-                String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
-                return dateFormat.parse(date);
-            } catch (ParseException ex) {
-                Log.e(TAG, ex.getMessage());
-                Log.i(TAG, "passing today's date");
-                return new Date();
-            }
-        }
-
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
@@ -177,8 +167,13 @@ public class ArticleListActivity extends AppCompatActivity implements
                             System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                             DateUtils.FORMAT_ABBREV_ALL).toString());
 
-            ImageLoadingUtils.load(holder.thumbnailView, mCursor.getString(ArticleLoader.Query.THUMB_URL));
+            String posterImageUrl = mCursor.getString(ArticleLoader.Query.THUMB_URL);
+            //  ImageLoadingUtils.load(holder.thumbnailView, posterImageUrl);
             holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+            Picasso.with(holder.thumbnailView.getContext())
+                    .load(posterImageUrl)
+                    .fit()
+                    .into(holder.thumbnailView);
         }
 
         @Override
