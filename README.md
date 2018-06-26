@@ -1,6 +1,57 @@
 # Android Projects
 #### By: Shaunak Jani
 
+# XYZ Reader App
+
+Redesigned the existing news reading app using [Material Design Guidelines](https://material.google.com/). This includes consistent and meaningful use of Material Design UI components, fonts, color, motion and surfaces.
+
+![XYZ Reader][XYZ-Reader]
+
+[XYZ-Reader]: ./XYZReader/media/app_banner.jpg
+
+## Features
+
+* Uses the Design Support library and its provided widget types (FloatingActionButton, AppBarLayout, SnackBar, etc).
+* Uses CoordinatorLayout for the main Activity.
+* Theme extends from AppCompat.
+* Provides a Floating Action Button for the most common action(s).
+* Properly specifies elevations for * bars, FABs, and other elements specified in the Material Design pecification.
+* Has a consistent color theme defined in styles.xml. Color theme does not impact usability of the app.
+* Provides sufficient space between text and surrounding elements.
+* Uses images that are high quality, specific, and full bleed.
+* Uses fonts that are either the Android defaults, are complementary, and aren't otherwise distracting.
+* Libraries:
+    * [Facebook Fresco](http://frescolib.org/)
+    * [Okhttp](http://square.github.io/okhttp/)
+    * [Picasso](http://square.github.io/picasso/)
+
+===================================
+# Build It Bigger App
+
+An app with multiple flavors that uses
+multiple libraries and Google Cloud Endpoints. The app consist
+of four modules. A Java library that provides jokes, a Google Cloud Endpoints
+(GCE) project that serves those jokes, an Android Library containing an
+activity for displaying jokes, and an Android app that fetches jokes from the
+GCE module and passes them to the Android Library for display.
+
+![Build It Bigger][Build-It-Bigger]
+
+[Build-It-Bigger]: ./BuildItBigger/media/app_banner.jpg
+
+## Features
+
+* Java library for supplying jokes
+* Android library with an activity that displays jokes passed to it as intent extras.
+* A Google Cloud Endpoints module that supplies jokes from the Java library. Project loads jokes from GCE module via an async task.
+* Connected tests to verify that the async task is indeed loading jokes.
+* Contains paid/free flavors. The paid flavor has no ads, and no unnecessary dependencies.
+* App retrieves jokes from Google Cloud Endpoints module and displays them via an Activity from the Android Library.
+* The free app variant display interstitial ads between the main activity and the joke-displaying activity.
+* The app display a loading indicator while the joke is being fetched from the server.
+* A Gradle task that starts the GCE dev server, runs all the Android tests, and shuts down the dev server.
+
+===================================
 # Baking App
 
 This app shows recipes. 
