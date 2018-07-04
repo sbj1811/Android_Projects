@@ -330,7 +330,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                     reviewLayout.addView(noReviewView);
                     return;
                 }
-;
+
                 for (Review review : reviewLists) {
                     LinearLayout layout = createReviewLayout(review);
                     reviewLayout.addView(layout);
