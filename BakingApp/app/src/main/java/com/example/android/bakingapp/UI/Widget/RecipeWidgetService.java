@@ -124,7 +124,7 @@ public class RecipeWidgetService extends IntentService {
                     position++;
                 }
                 RecipeWidgetProvider.updateAppWidgets(context,appWidgetManager,appWidgetIds,recipeName,sb.toString());
-            } {
+            } else {
                 Log.e(TAG, "onHandleIntent: Data NULL");
                 return;
             }
