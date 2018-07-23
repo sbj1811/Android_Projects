@@ -1,6 +1,35 @@
 # Android Projects
 #### By: Shaunak Jani
 
+# National Park Guide App
+
+National Park Guide boasts rich, detailed information on America’s most popular National
+Parks, including key features, history, maps, campgrounds, hiking trails, current weather and
+alerts, with links to additional information resources using [NPS Data API](https://www.nps.gov/subjects/digital/nps-data-api.htm) , [Hiking Project Data API](https://www.hikingproject.com//data)
+and [OpenWeatherMap API](https://openweathermap.org/api) .
+
+The application is aimed at Tourists and Hikers visiting any of the National Parks in United States of America.   
+
+![NPS App][NPS-app]
+
+[NPS-app]: ./USNationalParkGuide/media/app_banner.jpg
+
+## Features
+
+* Descriptions of each park’s key features and history, with links to additional resources.
+* Photo gallery stocked with high-quality park images
+* Alerts for park-related news, alerts, and events. 
+* Tag your favorite park sights.
+* Supports UI for Mutiple Phone and Tablet sizes
+* Uses Expresso Unit tests for UI and Intents
+* Offline mode.
+* Libraries:
+    * [Facebook Stetho](http://facebook.github.io/stetho/)
+    * [Picasso](http://square.github.io/picasso/)
+    * [Retrofit](http://square.github.io/retrofit/)
+    * [Butter Knife](jakewharton.github.io/butterknife/)
+
+===================================
 # XYZ Reader App
 
 Redesigned the existing news reading app using [Material Design Guidelines](https://material.google.com/). This includes consistent and meaningful use of Material Design UI components, fonts, color, motion and surfaces.
