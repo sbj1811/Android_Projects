@@ -12,7 +12,7 @@ The application is aimed at Tourists and Hikers visiting any of the National Par
 
 ![NPS App][NPS-app]
 
-[NPS-app]: ./media/app_banner.jpg
+[NPS-app]: ./USNationalParkGuide/media/app_banner.jpg
 
 ## Features
 
