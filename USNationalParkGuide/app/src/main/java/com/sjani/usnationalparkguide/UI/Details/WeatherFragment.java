@@ -1,16 +1,8 @@
 package com.sjani.usnationalparkguide.UI.Details;
 
-import android.app.LoaderManager;
+
 import android.content.Context;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +10,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
 import com.sjani.usnationalparkguide.Models.Weather.CurrentWeather;
 import com.sjani.usnationalparkguide.Models.Weather.Main;
 import com.sjani.usnationalparkguide.Models.Weather.Sys;
 import com.sjani.usnationalparkguide.Models.Weather.Weather;
 import com.sjani.usnationalparkguide.Models.Weather.Wind;
 import com.sjani.usnationalparkguide.R;
+import com.sjani.usnationalparkguide.Utils.FactoryUtils;
 import com.sjani.usnationalparkguide.Utils.NetworkSync.Weather.OpenWeatherMapApiConnection;
 import com.sjani.usnationalparkguide.Utils.StringToGPSCoordinates;
 import com.sjani.usnationalparkguide.Utils.WeatherUtils;
@@ -37,8 +28,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -46,12 +44,9 @@ import retrofit2.Response;
 public class WeatherFragment extends Fragment {
 
     private static final String TAG = WeatherFragment.class.getSimpleName();
-    private static final String URI = "uri";
-    private static final String PARK_ID = "park_id";
-    private static final String POSITION = "position";
     private static final String LATLONG = "latlong";
-    private static final int LOADER_ID = 12;
-
+    private static final String PARK_CODE = "park_code";
+    private static final String IS_FAV = "is_fav";
 
     @BindView(R.id.current_temp)
     TextView currentTempTextview;
@@ -74,15 +69,14 @@ public class WeatherFragment extends Fragment {
     @BindView(R.id.weather_loading_indicator)
     ProgressBar progressBar;
 
-    private Uri uri;
-    private String parkId;
-    private int position;
-    private String latLong;
+    private String parkCode;
     private List<Weather> currentWeather;
     private Main main;
     private Wind wind;
     private Sys sys;
     private Context mContext;
+    private boolean isFromFavNav;
+    private String latLong;
 
 
     public WeatherFragment() {
@@ -90,13 +84,12 @@ public class WeatherFragment extends Fragment {
     }
 
 
-    public static WeatherFragment newInstance(Uri uri, String parkId, int position, String latlong) {
+    public static WeatherFragment newInstance(String parkCode, boolean isFromFavNav, String latLong) {
         WeatherFragment fragment = new WeatherFragment();
         Bundle args = new Bundle();
-        args.putParcelable(URI, uri);
-        args.putString(PARK_ID, parkId);
-        args.putInt(POSITION, position);
-        args.putString(LATLONG, latlong);
+        args.putString(PARK_CODE, parkCode);
+        args.putBoolean(IS_FAV, isFromFavNav);
+        args.putString(LATLONG, latLong);
         fragment.setArguments(args);
         return fragment;
     }
@@ -105,10 +98,15 @@ public class WeatherFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            uri = savedInstanceState.getParcelable(URI);
-            parkId = savedInstanceState.getString(PARK_ID);
-            position = savedInstanceState.getInt(POSITION);
+            parkCode = savedInstanceState.getString(PARK_CODE);
             latLong = savedInstanceState.getString(LATLONG);
+            isFromFavNav = savedInstanceState.getBoolean(IS_FAV);
+        } else {
+            if (getArguments() != null) {
+                parkCode = getArguments().getString(PARK_CODE);
+                latLong = getArguments().getString(LATLONG);
+                isFromFavNav = getArguments().getBoolean(IS_FAV);
+            }
         }
     }
 
@@ -125,6 +123,40 @@ public class WeatherFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         progressBar.setVisibility(View.VISIBLE);
+        String apiKey = getResources().getString(R.string.NPSapiKey);
+        String trailApiKey = getResources().getString(R.string.HPapiKey);
+        String fields = getResources().getString(R.string.fields_cg);
+        DetailViewModelFactory factory = FactoryUtils.provideDVMFactory(this.getActivity().getApplicationContext(), parkCode, "", "", apiKey, trailApiKey, fields, latLong);
+        DetailViewModel viewModel = ViewModelProviders.of(getActivity(), factory).get(DetailViewModel.class);
+        if (!isFromFavNav) {
+            viewModel.getPark().observe(this, Park -> {
+                parkCode = Park.getParkCode();
+                Observable.fromCallable(() -> {
+                    getCurrentWeather(Park.getLatLong());
+                    return false;
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe((result) -> {
+                            createWeatherview(currentWeather, main, wind, sys);
+                        });
+            });
+        } else {
+            viewModel.getfavpark().observe(this, Park -> {
+                if (Park.size() == 1) {
+                    parkCode = Park.get(0).getParkCode();
+                    Observable.fromCallable(() -> {
+                        getCurrentWeather(Park.get(0).getLatLong());
+                        return false;
+                    })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe((result) -> {
+                                createWeatherview(currentWeather, main, wind, sys);
+                            });
+                }
+            });
+        }
     }
 
 
@@ -132,13 +164,6 @@ public class WeatherFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        if (getArguments() != null) {
-            uri = getArguments().getParcelable(URI);
-            parkId = getArguments().getString(PARK_ID);
-            position = getArguments().getInt(POSITION);
-            latLong = getArguments().getString(LATLONG);
-        }
-        new NetworkCall().execute();
     }
 
     @Override
@@ -146,7 +171,7 @@ public class WeatherFragment extends Fragment {
         super.onStart();
     }
 
-    public void getCurrentWeather() {
+    public void getCurrentWeather(String latLong) {
 
         String apiKey = mContext.getResources().getString(R.string.OWMapiKey);
         String metric = mContext.getResources().getString(R.string.units);
@@ -168,6 +193,7 @@ public class WeatherFragment extends Fragment {
     }
 
     public void createWeatherview(List<Weather> weather, Main main, Wind wind, Sys sys) {
+        progressBar.setVisibility(View.INVISIBLE);
         if (main != null && weather != null && wind != null && sys != null) {
             Double windspeed = wind.getSpeed();
             Double windDegree = wind.getDeg();
@@ -208,26 +234,10 @@ public class WeatherFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(URI, uri);
-        outState.putString(PARK_ID, parkId);
-        outState.putInt(POSITION, position);
+        outState.putString(PARK_CODE, parkCode);
         outState.putString(LATLONG, latLong);
+        outState.putBoolean(IS_FAV, isFromFavNav);
         super.onSaveInstanceState(outState);
     }
 
-    private class NetworkCall extends AsyncTask<Void, Void, Void> {
-
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            getCurrentWeather();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            createWeatherview(currentWeather, main, wind, sys);
-        }
-    }
 }

@@ -12,24 +12,27 @@ The application is aimed at Tourists and Hikers visiting any of the National Par
 
 ![NPS App][NPS-app]
 
-[NPS-app]: ./USNationalParkGuide/media/app_banner.jpg
+[NPS-app]: ./media/app_banner.jpg
 
 ## Features
 
-* Descriptions of each park’s key features and history, with links to additional resources.
+* MVVM architecture with Repository Pattern
+* Android Jetpack - LiveData, ViewModel, Room with RxJava
+* Descriptions of each parkEntity’s key features and history, with links to additional resources.
 * Current weather condition.
 * List of Trails and Campground with additional details. 
 * Park-related news, alerts, and events. 
-* Tag your favorite park sights.
-* Supports UI for Mutiple Phone and Tablet sizes.
+* Tag your favorite parkEntity sights.
+* Supports UI for multiple phone and tablet sizes.
 * Uses Expresso Unit tests for UI and Intents.
-* Google and Email signin.
-* Share Trail and Campgound location with friends.
+* Google and Email sign-in.
+* Share Trail and Campground location with friends.
 * The free app variant displays banner ads.
-* Homescreen Widget with Favorite Park deatils.
+* Home Screen Widget with Favorite Park details.
 * Accessibility support.
 * Offline mode.
 * Libraries:
+    * [RxJava](https://github.com/ReactiveX/RxJava)
     * [Retrofit](http://square.github.io/retrofit/)
     * [Butter Knife](jakewharton.github.io/butterknife/)
     * [Firebase Authentication](https://firebase.google.com/)
@@ -38,7 +41,7 @@ The application is aimed at Tourists and Hikers visiting any of the National Par
     * [Facebook Stetho](http://facebook.github.io/stetho/)
     * [Picasso](http://square.github.io/picasso/)
     * [Glide](https://github.com/bumptech/glide)
-    * [Facebook Fresco](http://frescolib.org/)
+    * [Facebook Fresco](http://frescolib.org
 
 ===================================
 # XYZ Reader App
